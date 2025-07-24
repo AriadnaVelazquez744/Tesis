@@ -1,0 +1,48 @@
+Document,Pan-2023,Zhang-2024, Jiang-2024,Wan-2022
+Year,2023,2024,2024,2-Jan-24
+Domain,Logic reasoning,"Knowledge 
+Reasoning",Rationality,Neuro-symbolic AI (NSAI)
+Title,LOGIC-LM: Empowering Large Language Models with Symbolic Solvers for Faithful Logical Reasoning,"CHAIN-OF-KNOWLEDGE: Integrating Knowledge Reasoning into Large
+Language Models by Learning from Knowledge Graphs",Towards Rationality in Language and Multimodal Agents: A Survey ,Towards Cognitive AI Systems: A Survey and Prospective on Neuro-Symbolic AI
+,,,,
+Chain-of-Action,x,,x,x
+Training,,x,,
+use Prolog,x,,,
+use Knowledge Graph,,x,,x
+use BFS,,x,,
+use Monte Carlo,,,,x
+symbolic formulation,x,,x,x
+"external deterministic 
+Solver",x,,,x
+in context learning,x,,x,
+Self-refinement,x,,x,
+Rule-base interpreter,x,,,x
+LLM-base interpreter,x,x,,
+LLM problem solving,,x,x,
+LLM probl representation,x,,,
+behavior learning,,x,,
+Trial-and-error,,x,,
+"simbolic agent that 
+Search the rules",,x,,
+,,,,
+external tools,x,,x,
+programming code,,,x,x
+symbolic resoners,x,,x,x
+multimodal agents,,,x,
+multi-agent systems,x,x,x,x
+,,,,
+axioms of rationality,,,,
+Information Graunding,,,x,x
+Logical Consistency,,,x,x
+Invariance from Irrelevant Context,,,x,x
+Orderability of Preference,,,x,
+,,,,
+evaluate,,,,
+hallucinations,,,x,
+modify instruction templates,,,x,
+paraphasing task descriptions,,,x,
+alter the order of examples,,,x,
+change prompt language,,,x,
+risk aversion,,,x,
+lost aversion,,,x,
+small probability under uncertainty,,,x,

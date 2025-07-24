@@ -1,0 +1,58 @@
+Large Language Models Are Neurosymbolic Reasoners -> https://arxiv.org/html/2401.09334v1#:~:text=A%20wide%20range%20of%20real,then%20receives%20observations%20and%20a
+
+LLM+AL: Bridging Large Language Models and Action Languages
+for Complex Reasoning about Actions -> https://arxiv.org/html/2501.00830v1#:~:text=Large%20Language%20Models%20,preview%2C%20using
+
+@inproceedings{pan-etal-2023-logic,
+    title = "Logic-{LM}: Empowering Large Language Models with Symbolic Solvers for Faithful Logical Reasoning",
+    author = "Pan, Liangming  and
+      Albalak, Alon  and
+      Wang, Xinyi  and
+      Wang, William",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP 2023",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.findings-emnlp.248/",
+    doi = "10.18653/v1/2023.findings-emnlp.248",
+    pages = "3806--3824",
+    abstract = "Large Language Models (LLMs) have shown human-like reasoning abilities but still struggle with complex logical problems. This paper introduces a novel framework, Logic-LM, which integrates LLMs with symbolic solvers to improve logical problem-solving. Our method first utilizes LLMs to translate a natural language problem into a symbolic formulation. Afterward, a deterministic symbolic solver performs inference on the formulated problem. We also introduce a self-refinement module, which utilizes the symbolic solver{'}s error messages to revise symbolic formalizations. We demonstrate Logic-LM{'}s effectiveness on five logical reasoning datasets: ProofWriter, PrOntoQA, FOLIO, LogicalDeduction, and AR-LSAT. On average, Logic-LM achieves a significant performance boost of 39.2{\%} over using LLM alone with standard prompting and 18.4{\%} over LLM with chain-of-thought prompting. Our findings suggest that Logic-LM, by combining LLMs with symbolic logic, offers a promising avenue for faithful logical reasoning."
+}
+
+
+@misc{romero2023synergisticintegrationlargelanguage,
+      title={Synergistic Integration of Large Language Models and Cognitive Architectures for Robust AI: An Exploratory Analysis},
+      author={Oscar J. Romero and John Zimmerman and Aaron Steinfeld and Anthony Tomasic},
+      year={2023},
+      eprint={2308.09830},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2308.09830},
+}s
+
+
+@misc{karpas2022mrklsystemsmodularneurosymbolic,
+      title={MRKL Systems: A modular, neuro-symbolic architecture that combines large language models, external knowledge sources and discrete reasoning},
+      author={Ehud Karpas and Omri Abend and Yonatan Belinkov and Barak Lenz and Opher Lieber and Nir Ratner and Yoav Shoham and Hofit Bata and Yoav Levine and Kevin Leyton-Brown and Dor Muhlgay and Noam Rozen and Erez Schwartz and Gal Shachaf and Shai Shalev-Shwartz and Amnon Shashua and Moshe Tenenholtz},
+      year={2022},
+      eprint={2205.00445},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2205.00445},
+}
+
+Chain-of-Knowledge: Integrating Knowledge Reasoning into Large Language Models by Learning from Knowledge Graphs -> https://arxiv.org/html/2407.00653v1#:~:text=In%20this%20paper%2C%20we%20introduce,but%20also%20general%20reasoning%20benchmarkms
+
+
+Enhancing Large Language Models through Neuro-Symbolic Integration and Ontological Reasoning -> https://arxiv.org/html/2504.07640v1#:~:text=domains%20requiring%20factual%20accuracy,results%20in%20a%20defined%20domain
+
+
+
+Large Language Model-Enhanced Symbolic Reasoning for Knowledge Base Completion -> https://arxiv.org/html/2501.01246v1#:~:text=Integrating%20large%20language%20models%20,effectively%20avoid%20hallucination%20in%20LLMs%E2%80%99
+
+
+
