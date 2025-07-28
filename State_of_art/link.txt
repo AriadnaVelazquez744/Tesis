@@ -56,3 +56,59 @@ Large Language Model-Enhanced Symbolic Reasoning for Knowledge Base Completion -
 
 
 
+
+
+
+
+
+
+@article{hou2025neural,
+  title={Neural-Symbolic Reasoning: Towards the Integration of Logical Reasoning with Large Language Models},
+  author={Hou, Zhe},
+  journal={Authorea Preprints},
+  year={2025},
+  publisher={Authorea}
+}
+
+
+@inproceedings{keber2024review,
+  title={A review on neuro-symbolic AI improvements to natural language processing},
+  author={Keber, Miha and Grubi{\v{s}}i{\'c}, Ivan and Bare{\v{s}}i{\'c}, Anja and Jovi{\'c}, Alan},
+  booktitle={2024 47th MIPRO ICT and Electronics Convention (MIPRO)},
+  pages={66--72},
+  year={2024},
+  organization={IEEE}
+}
+
+
+
+@article{cheng2025empowering,
+  title={Empowering llms with logical reasoning: A comprehensive survey},
+  author={Cheng, Fengxiang and Li, Haoxuan and Liu, Fenrong and van Rooij, Robert and Zhang, Kun and Lin, Zhouchen},
+  journal={arXiv preprint arXiv:2502.15652},
+  year={2025}
+}
+
+
+
+
+@article{li2025fundamental,
+  title={Fundamental capabilities and applications of large language models: A survey},
+  author={Li, Jiawei and Gao, Yang and Yang, Yizhe and Bai, Yu and Zhou, Xiaofeng and Li, Yinghao and Sun, Huashan and Liu, Yuhang and Si, Xingpeng and Ye, Yuhao and others},
+  journal={ACM Computing Surveys},
+  year={2025},
+  publisher={ACM New York, NY}
+}
+
+
+
+
+@article{wang2022towards,
+  title={Towards data-and knowledge-driven artificial intelligence: A survey on neuro-symbolic computing},
+  author={Wang, Wenguan and Yang, Yi and Wu, Fei},
+  journal={arXiv preprint arXiv:2210.15889},
+  year={2022}
+}
+
+
+
