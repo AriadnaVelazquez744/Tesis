@@ -8,4 +8,5 @@ dependencies = [
     "lingo-ai>=1.4.1",
     "numpy>=2.4.3",
     "spacy>=3.8.11",
+    "streamlit>=1.55.0",
 ]
