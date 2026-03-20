@@ -1,0 +1,40 @@
+services:
+  app:
+    build:
+      context: .
+    # Para reutilizar imagen local si construyes varias veces.
+    image: tesis:local
+
+    # GPU (entrenamiento y/o inferencia si el stack lo requiere).
+    gpus: all
+
+    ports:
+      - "8501:8501"
+
+    environment:
+      # Requerido por src/base_models/douwnload_models.py
+      HF_TOKEN: ${HF_TOKEN:-}
+
+      # Requerido para inferencia/chatbot si usas un servidor local (ej. LLMStudio).
+      LLMSTUDIO_BASE_URL: ${LLMSTUDIO_BASE_URL:-http://host.docker.internal:1234}
+
+      # Cache de Hugging Face dentro del contenedor.
+      HF_HOME: /root/.cache/huggingface
+
+    # Permite acceder al endpoint del host (Linux).
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    volumes:
+      # Código y scripts ya van en la imagen. Persistimos los datos que cambian:
+      - ./src/base_models:/app/src/base_models
+      - ./src/Vagueness_Judge/training_ckpts:/app/src/Vagueness_Judge/training_ckpts
+      - ./logs:/app/logs
+      - ./storage:/app/storage
+
+      # Cache global de Hugging Face (evita descargas repetidas).
+      - hf_cache:/root/.cache/huggingface
+
+volumes:
+  hf_cache:
+

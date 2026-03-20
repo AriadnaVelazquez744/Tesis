@@ -1,0 +1,12 @@
+State_of_art/
+
+# Evita empacar pesos de modelos (se descargan/usan por volumen).
+src/base_models/cache/
+src/base_models/*/
+
+# No hace falta para runtime dentro de la imagen.
+logs/
+**/*.pdf
+**/*.png
+**/*.docx
+
