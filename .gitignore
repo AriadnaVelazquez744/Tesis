@@ -212,3 +212,9 @@ State_of_art/*.png
 
 # original codes
 base_implementations/Vagueness_Judge/Tell_Me_More-master/
+
+# base models
+src/base_models/Mistral-7B-Instruct-v0.3/
+src/base_models/Qwen2.5-7B-Instruct/
+src/base_models/Qwen2.5-3B-Instruct/
+src/base_models/Phi-3-mini-4k-instruct/

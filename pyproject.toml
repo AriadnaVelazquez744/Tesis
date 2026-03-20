@@ -5,8 +5,22 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "accelerate>=0.30",
+    "bitsandbytes>=0.43",
+    "datasets>=2.18",
+    "dotenv>=0.9.9",
+    "huggingface-hub>=0.23",
+    "ipykernel>=7.2.0",
     "lingo-ai>=1.4.1",
+    "matplotlib>=3.10.8",
     "numpy>=2.4.3",
+    "pandas>=2.3.3",
+    "peft>=0.10",
+    "requests>=2.32.5",
     "spacy>=3.8.11",
     "streamlit>=1.55.0",
+    "torch>=2.1",
+    "transformers>=4.40",
+    "trl>=0.9",
+    "unsloth>=2024.3.0",
 ]
