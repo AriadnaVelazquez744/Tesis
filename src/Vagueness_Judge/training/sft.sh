@@ -47,7 +47,7 @@ GRAD_ACCUM="${GRAD_ACCUM:-4}"
 LOGGING_STEP="${LOGGING_STEP:-10}"
 SAVE_STEPS="${SAVE_STEPS:-400}"
 
-OUTPUT_DIR="${OUTPUT_DIR:-${REPO_ROOT}/src/Vagueness_Judge/training_ckpts}"
+OUTPUT_DIR="${OUTPUT_DIR:-${REPO_ROOT}/src/Vagueness_Judge/training_models}"
 
 mkdir -p "${REPO_ROOT}/logs"
 

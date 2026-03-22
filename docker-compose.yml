@@ -28,7 +28,7 @@ services:
     volumes:
       # Código y scripts ya van en la imagen. Persistimos los datos que cambian:
       - ./src/base_models:/app/src/base_models
-      - ./src/Vagueness_Judge/training_ckpts:/app/src/Vagueness_Judge/training_ckpts
+      - ./src/Vagueness_Judge/training_models:/app/src/Vagueness_Judge/training_models
       - ./logs:/app/logs
       - ./storage:/app/storage
 

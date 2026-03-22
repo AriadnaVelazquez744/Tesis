@@ -79,7 +79,7 @@ El script respeta variables como `CUDA_VISIBLE_DEVICES`, `MODEL_DIR_NAME`, etc.
 `docker-compose.yml` monta volumenes para:
 
 - `src/base_models/` (modelos descargados)
-- `src/Vagueness_Judge/training_ckpts/` (checkpoints)
+- `src/Vagueness_Judge/training_models/` (checkpoints)
 - `logs/` (logs de entrenamiento)
 - `storage/` (datos persistentes para el chatbot/experimentacion)
 

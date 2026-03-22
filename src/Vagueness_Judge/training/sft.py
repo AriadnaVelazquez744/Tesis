@@ -229,7 +229,7 @@ def main():
     parser.add_argument("--max_train_samples", type=int, default=None)
 
     # Training hyperparams
-    parser.add_argument("--output_dir", type=str, default=str(base_dir / "Vagueness_Judge" / "training_ckpts"))
+    parser.add_argument("--output_dir", type=str, default=str(base_dir / "Vagueness_Judge" / "training_models"))
     parser.add_argument("--epochs", type=int, default=1)
     parser.add_argument("--lr", type=float, default=1e-5)
     parser.add_argument("--batch_size_per_device", type=int, default=2)
