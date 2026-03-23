@@ -5,9 +5,6 @@ services:
     # Para reutilizar imagen local si construyes varias veces.
     image: tesis:local
 
-    # GPU (entrenamiento y/o inferencia si el stack lo requiere).
-    gpus: all
-
     ports:
       - "8501:8501"
 

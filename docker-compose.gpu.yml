@@ -1,0 +1,5 @@
+services:
+  app:
+    # Activa GPU (si tu stack NVIDIA está listo en el host).
+    gpus: all
+

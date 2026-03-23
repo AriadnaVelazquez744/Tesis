@@ -13,12 +13,16 @@ Todo lo ejecutable se hace con scripts `.sh`/`.py`.
 ## Requisitos (host)
 
 1. Docker (recomendado: Docker Compose v2).
-2. Si vas a entrenar/usar GPU con CUDA:
+2. Si vas a entrenar/usar GPU con CUDA (opcional; por defecto corre en CPU):
    - GPU NVIDIA compatible con CUDA.
    - Drivers NVIDIA en el host.
    - NVIDIA Container Toolkit en el host (para que Docker habilite `--gpus`).
 
 Nota: en Docker, pedir GPU por CUDA implica stack NVIDIA (CUDA es la plataforma de NVIDIA).
+Para activar GPU en Docker sin que sea obligatoria, usá un override opcional:
+- CPU (por defecto): `docker compose up -d`
+- GPU:
+  - `docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d`
 
 ## Archivos clave (ya incluidos)
 
@@ -53,7 +57,11 @@ docker compose build
 1. Levanta el servicio:
 
    ```bash
+   # CPU (por defecto)
    docker compose up -d
+
+   # GPU (si la necesitas)
+   docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
    ```
 
 2. Abre en el navegador: `http://localhost:8501`
