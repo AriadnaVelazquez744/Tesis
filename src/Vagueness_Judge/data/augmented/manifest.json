@@ -1,0 +1,22 @@
+{
+  "seeds_dir": "/home/ari/Collage/TESIS/Tesis/src/Vagueness_Judge/augment_data/seeds",
+  "out_dir": "/home/ari/Collage/TESIS/Tesis/src/Vagueness_Judge/data/augmented",
+  "test_ratio": 0.2,
+  "base_seed": 42,
+  "annotate": false,
+  "counts": {
+    "total": 24,
+    "train": 20,
+    "test": 4,
+    "by_strand": {
+      "logic": 6,
+      "math": 6,
+      "psychology": 6,
+      "search": 6
+    }
+  },
+  "outputs": {
+    "train": "/home/ari/Collage/TESIS/Tesis/src/Vagueness_Judge/data/augmented/interaction_data_train.jsonl",
+    "test": "/home/ari/Collage/TESIS/Tesis/src/Vagueness_Judge/data/augmented/interaction_data_test.jsonl"
+  }
+}

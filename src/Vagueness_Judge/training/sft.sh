@@ -33,6 +33,7 @@ MODEL_DIR_NAME="${MODEL_DIR_NAME:-Mistral-7B-Instruct-v0.3}"
 # Config opcional por modelo (si no existe, se usarán defaults en sft.py)
 MODEL_CONFIG_PATH="${MODEL_CONFIG_PATH:-${REPO_ROOT}/src/Vagueness_Judge/training/model_configs/${MODEL_DIR_NAME}.json}"
 
+# Override with augmented data, e.g. ${REPO_ROOT}/src/Vagueness_Judge/data/augmented/interaction_data_train.jsonl
 TRAIN_DATA_PATH="${TRAIN_DATA_PATH:-${REPO_ROOT}/src/Vagueness_Judge/data/interactions/interaction_data_train.jsonl}"
 DATA_SETTING="${DATA_SETTING:-MTMD}"
 
