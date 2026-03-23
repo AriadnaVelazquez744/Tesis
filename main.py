@@ -1,6 +1,7 @@
 import streamlit as st
 
-from src.lingo.engine import process_query
+from src.Vagueness_Judge.runtime import default_clarification_state
+from src.lingo.pipeline import run_main_pipeline
 
 
 def _init_session_state() -> None:
@@ -11,6 +12,8 @@ def _init_session_state() -> None:
             "kb_sources": ["default"],
             "skills": ["core"],
         }
+    if "clarification_state" not in st.session_state:
+        st.session_state.clarification_state = default_clarification_state()
 
 
 def main() -> None:
@@ -42,10 +45,15 @@ def main() -> None:
         with st.chat_message("user"):
             st.markdown(user_query)
 
-        response = process_query(
-            query=user_query,
+        response = run_main_pipeline(
+            user_text=user_query,
             history=st.session_state.messages,
             config=st.session_state.config,
+            clarification_state=st.session_state.clarification_state,
+        )
+        st.session_state.clarification_state = response.get(
+            "clarification_state",
+            default_clarification_state(),
         )
 
         assistant_content = response.get("content", "")
