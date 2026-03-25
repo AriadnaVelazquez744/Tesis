@@ -20,6 +20,7 @@ Todo lo ejecutable se hace con scripts `.sh`/`.py`.
 
 Nota: en Docker, pedir GPU por CUDA implica stack NVIDIA (CUDA es la plataforma de NVIDIA).
 Para activar GPU en Docker sin que sea obligatoria, usá un override opcional:
+
 - CPU (por defecto): `docker compose up -d`
 - GPU:
   - `docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d`
@@ -88,6 +89,7 @@ El script respeta variables como `CUDA_VISIBLE_DEVICES`, `MODEL_DIR_NAME`, etc.
 
 - `src/base_models/` (modelos descargados)
 - `src/Vagueness_Judge/training_models/` (checkpoints)
+- `src/MIDLM/data/` (corpus WeaveClinc150, TSV TEXTOIR, salidas de generación/rewrite)
 - `logs/` (logs de entrenamiento)
 - `storage/` (datos persistentes para el chatbot/experimentacion)
 

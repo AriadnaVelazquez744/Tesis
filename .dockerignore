@@ -1,11 +1,18 @@
 State_of_art/
 
+# Artefactos locales (no van a la imagen; el venv se crea en el Dockerfile).
+.venv/
+.git/
+tesis_local.tar
+
 # Evita empacar pesos de modelos (se descargan/usan por volumen).
 src/base_models/cache/
 src/base_models/*/
 
 # No hace falta para runtime dentro de la imagen.
 logs/
+**/__pycache__/
+**/*.pyc
 **/*.pdf
 **/*.png
 **/*.docx

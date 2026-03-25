@@ -38,7 +38,7 @@ COPY run_web.sh ./run_web.sh
 COPY download_models.sh ./download_models.sh
 
 RUN chmod +x ./run_web.sh ./download_models.sh \
-  && mkdir -p ./logs ./storage ./src/base_models ./src/Vagueness_Judge/training_models
+  && mkdir -p ./logs ./storage ./src/base_models ./src/Vagueness_Judge/training_models ./src/MIDLM/data
 
 EXPOSE 8501
 CMD ["./run_web.sh"]
