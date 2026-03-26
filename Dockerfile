@@ -1,6 +1,8 @@
 FROM python:3.12-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV UV_HTTP_TIMEOUT=180
+ENV UV_CACHE_DIR=/root/.cache/uv
 
 # Dependencias mínimas para correr y para compilaciones ocasionales de wheels.
 RUN apt-get update \
@@ -29,7 +31,8 @@ ENV VIRTUAL_ENV=/app/.venv
 ENV PATH="/app/.venv/bin:${PATH}"
 
 # Instala dependencias reproducibles.
-RUN uv sync --frozen
+RUN mkdir -p "${UV_CACHE_DIR}" \
+  && uv sync --frozen
 
 # Copia el código y scripts.
 COPY main.py ./main.py
@@ -38,7 +41,14 @@ COPY run_web.sh ./run_web.sh
 COPY download_models.sh ./download_models.sh
 
 RUN chmod +x ./run_web.sh ./download_models.sh \
-  && mkdir -p ./logs ./storage ./src/base_models ./src/Vagueness_Judge/training_models ./src/MIDLM/data
+  && mkdir -p \
+    ./logs \
+    ./storage \
+    ./src/base_models \
+    ./src/Vagueness_Judge/training_models \
+    ./src/MIDLM/data \
+    ./src/MIDLM/trained_models \
+    ./src/MIDLM/experiments
 
 EXPOSE 8501
 CMD ["./run_web.sh"]

@@ -27,6 +27,8 @@ services:
       - ./src/base_models:/app/src/base_models
       - ./src/Vagueness_Judge/training_models:/app/src/Vagueness_Judge/training_models
       - ./src/MIDLM/data:/app/src/MIDLM/data
+      - ./src/MIDLM/trained_models:/app/src/MIDLM/trained_models
+      - ./src/MIDLM/experiments:/app/src/MIDLM/experiments
       - ./logs:/app/logs
       - ./storage:/app/storage
 

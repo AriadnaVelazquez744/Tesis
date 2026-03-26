@@ -7,6 +7,7 @@ Proveer un entorno reproducible con Docker + `uv` para:
 - Ejecutar la interfaz tipo chatbot (Streamlit) y llamadas a modelos para inferencia (vía `LLMSTUDIO_BASE_URL`).
 - Ejecutar descarga de modelos (`src/base_models/douwnload_models.py`).
 - Ejecutar entrenamiento (`src/Vagueness_Judge/training/sft.sh`).
+- Ejecutar entrenamiento/evaluación MIDLM (`src/MIDLM/train_midlm_unsloth.py`, `src/MIDLM/eval_midlm.py`).
 
 Todo lo ejecutable se hace con scripts `.sh`/`.py`.
 
@@ -32,6 +33,8 @@ Para activar GPU en Docker sin que sea obligatoria, usá un override opcional:
 - `run_web.sh`: arranca la UI (Streamlit).
 - `src/base_models/douwnload_models.py`: descarga un modelo base.
 - `src/Vagueness_Judge/training/sft.sh`: entrena con tu GPU (llama a `sft.py`).
+- `src/MIDLM/train_midlm_unsloth.py`: entrena MIDLM con Unsloth + LoRA.
+- `src/MIDLM/eval_midlm.py`: evalúa MIDLM y guarda resultados en experimentos.
 
 ## Variables de entorno
 
@@ -83,6 +86,25 @@ El contenedor usa el venv ya creado y `docker-compose` ejecuta `./run_web.sh`.
 
 El script respeta variables como `CUDA_VISIBLE_DEVICES`, `MODEL_DIR_NAME`, etc.
 
+## Ejecutar entrenamiento MIDLM (script .py)
+
+```bash
+docker compose run --rm app uv run python src/MIDLM/train_midlm_unsloth.py \
+  --model_dir_name Qwen2.5-3B-Instruct \
+  --data_json src/MIDLM/data/WeaveClinc150_rewritten.json \
+  --load_in_4bit --bf16 --gradient_checkpointing
+```
+
+## Ejecutar evaluación MIDLM (script .py)
+
+```bash
+docker compose run --rm app uv run python src/MIDLM/eval_midlm.py \
+  --checkpoint_dir src/MIDLM/trained_models/Qwen2.5-3B-Instruct_midlm \
+  --split test \
+  --experiments_dir src/MIDLM/experiments \
+  --save_predictions
+```
+
 ## Persistencia (datos que se guardan)
 
 `docker-compose.yml` monta volumenes para:
@@ -90,6 +112,8 @@ El script respeta variables como `CUDA_VISIBLE_DEVICES`, `MODEL_DIR_NAME`, etc.
 - `src/base_models/` (modelos descargados)
 - `src/Vagueness_Judge/training_models/` (checkpoints)
 - `src/MIDLM/data/` (corpus WeaveClinc150, TSV TEXTOIR, salidas de generación/rewrite)
+- `src/MIDLM/trained_models/` (adapters/checkpoints de entrenamiento MIDLM)
+- `src/MIDLM/experiments/` (resultados de evaluación comparables entre corridas)
 - `logs/` (logs de entrenamiento)
 - `storage/` (datos persistentes para el chatbot/experimentacion)
 
