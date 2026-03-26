@@ -224,3 +224,4 @@ src/base_models/Phi-3-mini-4k-instruct/
 tesis_local.tar
 
 .cursor/
+.vscode/
