@@ -114,6 +114,7 @@ docker compose run --rm app uv run python src/MIDLM/eval_midlm.py \
 - `src/MIDLM/data/` (corpus WeaveClinc150, TSV TEXTOIR, salidas de generación/rewrite)
 - `src/MIDLM/trained_models/` (adapters/checkpoints de entrenamiento MIDLM)
 - `src/MIDLM/experiments/` (resultados de evaluación comparables entre corridas)
+- `src/TEXTOIR/` (código + pesos/checkpoints TEXTOIR si los guardas ahí; p.ej. MSP)
 - `logs/` (logs de entrenamiento)
 - `storage/` (datos persistentes para el chatbot/experimentacion)
 

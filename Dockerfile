@@ -48,7 +48,8 @@ RUN chmod +x ./run_web.sh ./download_models.sh \
     ./src/Vagueness_Judge/training_models \
     ./src/MIDLM/data \
     ./src/MIDLM/trained_models \
-    ./src/MIDLM/experiments
+    ./src/MIDLM/experiments \
+    ./src/TEXTOIR
 
 EXPOSE 8501
 CMD ["./run_web.sh"]

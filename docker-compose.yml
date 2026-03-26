@@ -29,6 +29,7 @@ services:
       - ./src/MIDLM/data:/app/src/MIDLM/data
       - ./src/MIDLM/trained_models:/app/src/MIDLM/trained_models
       - ./src/MIDLM/experiments:/app/src/MIDLM/experiments
+      - ./src/TEXTOIR:/app/src/TEXTOIR
       - ./logs:/app/logs
       - ./storage:/app/storage
 
