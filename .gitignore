@@ -212,6 +212,7 @@ State_of_art/*.png
 
 # original codes
 base_implementations/Vagueness_Judge/Tell_Me_More-master/
+base_implementations/TEXTOIR/
 
 # base models
 src/base_models/Mistral-7B-Instruct-v0.3/
