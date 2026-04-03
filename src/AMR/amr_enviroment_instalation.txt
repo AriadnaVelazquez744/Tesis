@@ -1,0 +1,30 @@
+Fish terminal commands to create correctly the virtual environment for the AMR module
+
+Run from the main directory of the project
+
+uv venv --python 3.8 .venv-amr
+
+source .venv-amr/bin/activate.fish && \
+    uv pip install --python .venv-amr/bin/python \
+    fastapi==0.104.1 \
+    uvicorn==0.24.0 \
+    pydantic==2.5.0 \
+    "numpy<1.24" \
+    "torch>=2.1.0" \
+    "transformers>=4.35,<4.40" \
+    "fairseq<=0.10.2" \
+    "penman>=1.1.0" \
+    "tqdm>=4.55" \
+    "packaging>=20.8" \
+    "requests>=2.25" \
+    "python-dateutil>=2.8" \
+    "ipdb<=0.13.13" \
+    "progressbar" \
+    "tensorboardX"
+
+uv pip install --python .venv-amr/bin/python \
+    torch-scatter \
+    -f https://data.pyg.org/whl/torch-2.1.0+cu121.html
+
+uv pip install --python .venv-amr/bin/python \
+    git+https://github.com/IBM/transition-amr-parser.git@v0.5.4
