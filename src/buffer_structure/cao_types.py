@@ -29,8 +29,10 @@ class MetaReasoningLayer(TypedDict, total=False):
 
 
 class StateLayer(TypedDict, total=False):
-    # Placeholder for later: logic triples (S, R, O).
-    triples: NotRequired[List[Dict[str, Any]]]
+    # Placeholder for later: logic triples (S, R, O). What VSA will eventually use
+    triples: NotRequired[List[Dict[str, Any]]] 
+    # What AMR outputs initially (saved for KeyBERT/Logic Transformer)
+    unrefined_triples: NotRequired[List[Dict[str, Any]]]
 
 
 class CognitiveAnalysisObject(TypedDict):
