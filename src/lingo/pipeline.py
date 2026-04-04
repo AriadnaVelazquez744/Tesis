@@ -8,6 +8,8 @@ from src.Vagueness_Judge.runtime import (
 )
 
 from src.midlm_textoir_module.analyze import analyze_midlm_textoir
+from src.buffer_structure.cao_formatters import format_cao_as_markdown
+from src.AMR.amr_processor import process_amr_into_cao
 from .engine import process_query
 
 
@@ -35,9 +37,9 @@ def run_main_pipeline(
     if config is None:
         config = {}
     if clarification_state is None:
-        clarification_state = default_clarification_state()
+        clarification_state = default_clarification_state()  # type: ignore
 
-    vagueness_result = handle_vagueness_turn(user_text, clarification_state)
+    vagueness_result = handle_vagueness_turn(user_text, clarification_state)  # type: ignore
     updated_state = vagueness_result["updated_state"]
 
     if vagueness_result["status"] == "needs_user_input":
@@ -85,6 +87,26 @@ def run_main_pipeline(
         midlm_bf16=midlm_bf16,
     )
 
+    # Integrate AMR processing into CAO
+    buffer_input = completed_query.strip()
+
+    try:
+        analysis_result["cao"] = process_amr_into_cao(  # type: ignore
+            analysis_result["cao"],  # type: ignore
+            buffer_input,  # type: ignore
+        )
+        amr_ok = analysis_result["cao"].get("meta", {}).get("amr_ok", False)
+        amr_error = analysis_result["cao"].get("meta", {}).get("amr_error", "none")
+        print(f"[PIPELINE] AMR processing result: amr_ok={amr_ok}, error={amr_error}")
+        if not amr_ok:
+            print(
+                f"[PIPELINE] AMR error detail: {analysis_result['cao'].get('meta', {}).get('amr_error_detail', 'unknown')}"
+            )
+    except Exception as e:
+        print(f"[PIPELINE] AMR integration failed: {e}")
+        analysis_result["cao"].setdefault("meta", {})["amr_ok"] = False
+        analysis_result["cao"]["meta"]["amr_error"] = str(e)
+
     merged_meta: Dict[str, Any] = {}
     cao_meta = analysis_result["cao"].get("meta", {})
     if isinstance(cao_meta, dict):
@@ -111,8 +133,11 @@ def run_main_pipeline(
         }
     )
 
+    # Regenerate content with AMR data included
+    final_content = format_cao_as_markdown(analysis_result["cao"]) # type: ignore
+
     return {
-        "content": analysis_result["content"],
+        "content": final_content,
         "meta": merged_meta,
         "clarification_state": updated_state,
     }
