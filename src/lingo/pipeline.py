@@ -11,6 +11,7 @@ from src.midlm_textoir_module.analyze import analyze_midlm_textoir
 from src.buffer_structure.cao_formatters import format_cao_as_markdown
 from src.AMR.amr_processor import process_amr_into_cao
 from .engine import process_query
+from src.Semantic_Grounding.KeyBERT_processor import extract_and_ground
 
 
 class Message(TypedDict):
@@ -106,6 +107,15 @@ def run_main_pipeline(
         print(f"[PIPELINE] AMR integration failed: {e}")
         analysis_result["cao"].setdefault("meta", {})["amr_ok"] = False
         analysis_result["cao"]["meta"]["amr_error"] = str(e)
+
+    # Integrate KeyBERT grounding step
+    try:
+        analysis_result["cao"] = extract_and_ground( # type: ignore
+            analysis_result["cao"],  # type: ignore
+            buffer_input
+        )
+    except Exception as e:
+        print(f"[PIPELINE] KeyBERT integration failed: {e}")
 
     merged_meta: Dict[str, Any] = {}
     cao_meta = analysis_result["cao"].get("meta", {})
