@@ -30,6 +30,7 @@ services:
       - ./src/MIDLM/trained_models:/app/src/MIDLM/trained_models
       - ./src/MIDLM/experiments:/app/src/MIDLM/experiments
       - ./src/TEXTOIR:/app/src/TEXTOIR
+      - ./src/Semantic_Grounding:/app/src/Semantic_Grounding
       - ./logs:/app/logs
       - ./storage:/app/storage
 
