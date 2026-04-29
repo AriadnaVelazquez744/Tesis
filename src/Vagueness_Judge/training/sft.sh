@@ -76,6 +76,12 @@ ARGS=(
 # Recomendación para 12GB: QLoRA en 4-bit.
 ARGS+=( --load_in_4bit )
 
+# Auto-resume from latest checkpoint if it exists (set RESUME=0 to disable).
+RESUME="${RESUME:-1}"
+if [[ "${RESUME}" == "1" ]]; then
+  ARGS+=( --resume )
+fi
+
 # Si tu GPU soporta bf16, activa bf16. Si no, usa fp16.
 if [[ "${USE_BF16:-1}" == "1" ]]; then
   ARGS+=( --bf16 )

@@ -15,6 +15,7 @@ from unsloth import FastLanguageModel
 
 # Ensure imports work regardless of current working directory.
 import sys
+
 sys.path.append(str(Path(__file__).parent))
 
 from dataset_wrapper import PromptIterableDataset, collator
@@ -58,9 +59,13 @@ def format_one(
         response = f"{action['content']}"
     else:
         if action["type"] == "New":
-            response = f"[INQUIRY THOUGHT] {action['thought']}\n[INQUIRY] {action['content']}"
+            response = (
+                f"[INQUIRY THOUGHT] {action['thought']}\n[INQUIRY] {action['content']}"
+            )
         elif action["type"] == "summary":
-            response = f"[SUMMARY THOUGHT] {action['thought']}\n[SUMMARY] {action['content']}"
+            response = (
+                f"[SUMMARY THOUGHT] {action['thought']}\n[SUMMARY] {action['content']}"
+            )
 
     initial_thought_str = f"[INITIAL THOUGHT] {thought}"
     if idx == 0:
@@ -81,7 +86,9 @@ def preprocess_data(data: Dict[str, Any], args: argparse.Namespace) -> Any:
     if args.data_setting == "MTSD":
         sequences.extend(
             [
-                format_one(idx, data["thought"], action, data["vague"], data["missing_details"])
+                format_one(
+                    idx, data["thought"], action, data["vague"], data["missing_details"]
+                )
                 for idx, action in enumerate(data["actions"])
             ]
         )
@@ -91,7 +98,9 @@ def preprocess_data(data: Dict[str, Any], args: argparse.Namespace) -> Any:
         dataset = []
         for idx, action in enumerate(data["actions"]):
             sequences.append(
-                format_one(idx, data["thought"], action, data["vague"], data["missing_details"])
+                format_one(
+                    idx, data["thought"], action, data["vague"], data["missing_details"]
+                )
             )
             if action["role"] == "assistant":
                 dataset.append({"data": sequences.copy()})
@@ -223,18 +232,34 @@ def main():
 
     # Data
     base_dir = Path(__file__).resolve().parents[2]  # src/
-    default_train = base_dir / "Vagueness_Judge" / "data" / "interactions" / "interaction_data_train.jsonl"
+    default_train = (
+        base_dir
+        / "Vagueness_Judge"
+        / "data"
+        / "interactions"
+        / "interaction_data_train.jsonl"
+    )
     parser.add_argument("--train_data_path", type=str, default=str(default_train))
-    parser.add_argument("--data_setting", type=str, default="MTMD", choices=["MTSD", "MTMD"])
+    parser.add_argument(
+        "--data_setting", type=str, default="MTMD", choices=["MTSD", "MTMD"]
+    )
     parser.add_argument("--max_train_samples", type=int, default=None)
 
     # Training hyperparams
-    parser.add_argument("--output_dir", type=str, default=str(base_dir / "Vagueness_Judge" / "training_models"))
+    parser.add_argument(
+        "--output_dir",
+        type=str,
+        default=str(base_dir / "Vagueness_Judge" / "training_models"),
+    )
     parser.add_argument("--epochs", type=int, default=1)
     parser.add_argument("--lr", type=float, default=1e-5)
     parser.add_argument("--batch_size_per_device", type=int, default=2)
     parser.add_argument("--gradient_accumulation_steps", type=int, default=1)
-    parser.add_argument("--gradient_checkpointing", action="store_true", help="Reduce VRAM via gradient checkpointing")
+    parser.add_argument(
+        "--gradient_checkpointing",
+        action="store_true",
+        help="Reduce VRAM via gradient checkpointing",
+    )
     parser.add_argument("--weight_decay", type=float, default=0.0)
     parser.add_argument("--max_grad_norm", type=float, default=1.0)
     parser.add_argument("--warmup_ratio", type=float, default=0.0)
@@ -261,12 +286,19 @@ def main():
         default="q_proj,v_proj,k_proj,o_proj",
         help="Comma-separated target module names for LoRA (LLaMA/Mistral-like by default).",
     )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Resume from the latest checkpoint in the output directory if one exists.",
+    )
 
     args = parser.parse_args()
     random.seed(args.seed)
     torch.manual_seed(args.seed)
 
-    target_modules_list = [x.strip() for x in args.target_modules.split(",") if x.strip()]
+    target_modules_list = [
+        x.strip() for x in args.target_modules.split(",") if x.strip()
+    ]
     args.target_modules = target_modules_list
 
     model, tokenizer = load_model_and_tokenizer(args)
@@ -316,7 +348,28 @@ def main():
         data_collator=train_data_collator,
     )
 
-    trainer.train()
+    # Resume from the latest checkpoint if requested and one exists.
+    resume_from_checkpoint = None
+    if args.resume:
+        if exp_output.exists():
+            ckpt_dirs = sorted(exp_output.glob("checkpoint-*"))
+            if ckpt_dirs:
+                resume_from_checkpoint = str(ckpt_dirs[-1])
+                logger.info(
+                    "Resuming training from checkpoint: %s", resume_from_checkpoint
+                )
+            else:
+                logger.info(
+                    "No checkpoints found in %s. Starting from scratch.",
+                    str(exp_output),
+                )
+        else:
+            logger.info(
+                "Output directory %s does not exist yet. Starting from scratch.",
+                str(exp_output),
+            )
+
+    trainer.train(resume_from_checkpoint=resume_from_checkpoint)
 
     # Save adapters + tokenizer
     model.save_pretrained(str(exp_output))
