@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""LoRA/QLoRA fine-tuning script optimized for 12GB VRAM.
-For 7B models: uses 4-bit quantization (QLoRA) - ~8GB VRAM usage.
-For 3B models: use sft_3b.py with 8-bit or 16-bit LoRA - ~6-8GB VRAM usage.
+"""LoRA/QLoRA fine-tuning for 7B models optimized for 12GB VRAM.
+Uses 4-bit quantization (QLoRA) to fit 7B model in 12GB VRAM.
 Based on original Tell_Me_More-master/src/sft.py but uses HuggingFace ecosystem.
 """
 
@@ -10,7 +9,7 @@ import json
 import logging
 import random
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import torch
 from transformers import Trainer, TrainingArguments, AutoTokenizer
@@ -117,34 +116,12 @@ def load_raw_dataset(args: argparse.Namespace) -> List[Dict[str, Any]]:
     return dataset
 
 
-def _load_model_config_if_exists(model_config_path: Optional[str]) -> Dict[str, Any]:
-    if not model_config_path:
-        return {}
-    config_path = Path(model_config_path)
-    if not config_path.exists():
-        logger.warning("Model config not found: %s (using defaults)", str(config_path))
-        return {}
-    with open(config_path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
 def load_model_and_tokenizer(args: argparse.Namespace):
     base_dir = Path(__file__).resolve().parents[2]
     base_models_dir = base_dir / "base_models"
     model_path = base_models_dir / args.model_dir_name
     if not model_path.exists():
         raise FileNotFoundError(f"Model directory not found: {model_path}")
-
-    model_config = _load_model_config_if_exists(args.model_config_path)
-    peft_cfg = model_config.get("peft", {})
-
-    lora_r = int(peft_cfg.get("r", args.lora_r))
-    lora_alpha = int(peft_cfg.get("lora_alpha", args.lora_alpha))
-    lora_dropout = float(peft_cfg.get("lora_dropout", args.lora_dropout))
-    target_modules = peft_cfg.get("target_modules", None) or args.target_modules
-    if isinstance(target_modules, str):
-        if target_modules.strip() != "all-linear":
-            target_modules = [x.strip() for x in target_modules.split(",") if x.strip()]
 
     logger.info("Loading model from: %s", str(model_path))
 
@@ -169,45 +146,39 @@ def load_model_and_tokenizer(args: argparse.Namespace):
     tokenizer.pad_token_id = tokenizer.convert_tokens_to_ids(tokenizer.pad_token)
 
     # 4-bit quantization for 7B model to fit in 12GB VRAM
-    if args.load_in_4bit:
-        logger.info("Loading model in 4-bit quantization (QLoRA) for 12GB VRAM")
-        quantization_config = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_compute_dtype=torch.bfloat16 if args.bf16 else torch.float16,
-            bnb_4bit_use_double_quant=True,
-            bnb_4bit_quant_type="nf4"
-        )
-    elif args.load_in_8bit:
-        logger.info("Loading model in 8-bit quantization")
-        quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-    else:
-        quantization_config = None
+    logger.info("Loading 7B model in 4-bit quantization (QLoRA) for 12GB VRAM")
+    quantization_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_compute_dtype=torch.bfloat16 if args.bf16 else torch.float16,
+        bnb_4bit_use_double_quant=True,
+        bnb_4bit_quant_type="nf4"
+    )
 
-    dtype = torch.bfloat16 if args.bf16 else (torch.float16 if args.fp16 else torch.float32)
+    dtype = torch.bfloat16 if args.bf16 else torch.float16
 
     model = AutoModelForCausalLM.from_pretrained(
         str(model_path),
         torch_dtype=dtype,
         trust_remote_code=True,
         quantization_config=quantization_config,
-        device_map="auto" if quantization_config else None,
+        device_map="auto",
     )
 
-    if quantization_config:
-        model = prepare_model_for_kbit_training(model)
+    model = prepare_model_for_kbit_training(model)
 
-    # Attach LoRA
+    # LoRA config optimized for 7B
+    target_modules = [x.strip() for x in args.target_modules.split(",") if x.strip()]
+
     peft_config = LoraConfig(
-        r=lora_r,
-        lora_alpha=lora_alpha,
-        lora_dropout=lora_dropout,
+        r=args.lora_r,
+        lora_alpha=args.lora_alpha,
+        lora_dropout=args.lora_dropout,
         target_modules=target_modules,
         bias="none",
         task_type="CAUSAL_LM"
     )
 
     model = get_peft_model(model, peft_config)
-    model.print_trainable_parameters()
 
     if args.gradient_checkpointing:
         model.gradient_checkpointing_enable()
@@ -215,28 +186,28 @@ def load_model_and_tokenizer(args: argparse.Namespace):
     else:
         model.config.use_cache = False
 
+    model.print_trainable_parameters()
     return model, tokenizer
 
 
 def main():
-    parser = argparse.ArgumentParser(description="LoRA/QLoRA training for 7B models (12GB VRAM)")
+    parser = argparse.ArgumentParser(description="7B model LoRA/QLoRA training for 12GB VRAM")
 
-    parser.add_argument("--model_dir_name", type=str, required=True)
-    parser.add_argument("--model_config_path", type=str, default=None)
-
-    base_dir = Path(__file__).resolve().parents[2]
-    default_train = base_dir / "Vagueness_Judge" / "data" / "interactions" / "interaction_data_train.jsonl"
-    parser.add_argument("--train_data_path", type=str, default=str(default_train))
+    parser.add_argument("--model_dir_name", type=str, required=True,
+                        help="Subdirectory name inside src/base_models/")
+    parser.add_argument("--train_data_path", type=str)
     parser.add_argument("--data_setting", type=str, default="MTMD", choices=["MTSD", "MTMD"])
     parser.add_argument("--max_train_samples", type=int, default=None)
 
-    parser.add_argument("--output_dir", type=str, default=str(base_dir / "Vagueness_Judge" / "training_models"))
+    parser.add_argument("--output_dir", type=str)
     parser.add_argument("--epochs", type=int, default=1)
     parser.add_argument("--lr", type=float, default=1e-5)
     parser.add_argument("--batch_size_per_device", type=int, default=1,
                         help="Use 1 for 12GB VRAM with 7B 4-bit")
-    parser.add_argument("--gradient_accumulation_steps", type=int, default=4)
-    parser.add_argument("--gradient_checkpointing", action="store_true", default=True)
+    parser.add_argument("--gradient_accumulation_steps", type=int, default=4,
+                        help="Effective batch = batch_size * grad_accum")
+    parser.add_argument("--gradient_checkpointing", action="store_true", default=True,
+                        help="Reduce VRAM (enabled by default for 7B)")
     parser.add_argument("--weight_decay", type=float, default=0.0)
     parser.add_argument("--max_grad_norm", type=float, default=1.0)
     parser.add_argument("--warmup_ratio", type=float, default=0.0)
@@ -247,12 +218,10 @@ def main():
 
     parser.add_argument("--max_seq_length", type=int, default=1024)
 
-    parser.add_argument("--load_in_4bit", action="store_true", default=True,
-                        help="4-bit quantization for 7B model (default for 12GB VRAM)")
-    parser.add_argument("--load_in_8bit", action="store_true",
-                        help="8-bit quantization (alternative for smaller models)")
     parser.add_argument("--bf16", action="store_true")
     parser.add_argument("--fp16", action="store_true")
+    parser.add_argument("--load_in_4bit", action="store_true", default=True,
+                        help="4-bit quantization for 7B model (default for 12GB VRAM)")
 
     parser.add_argument("--lora_r", type=int, default=16)
     parser.add_argument("--lora_alpha", type=int, default=32)
@@ -265,6 +234,13 @@ def main():
 
     random.seed(args.seed)
     torch.manual_seed(args.seed)
+
+    # Set default paths
+    base_dir = Path(__file__).resolve().parents[2]
+    if args.train_data_path is None:
+        args.train_data_path = str(base_dir / "Vagueness_Judge" / "data" / "interactions" / "interaction_data_train.jsonl")
+    if args.output_dir is None:
+        args.output_dir = str(base_dir / "Vagueness_Judge" / "training_models")
 
     model, tokenizer = load_model_and_tokenizer(args)
 

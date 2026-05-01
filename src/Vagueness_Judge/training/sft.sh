@@ -21,6 +21,12 @@ DISTRIBUTED_ARGS="--nproc_per_node ${GPUS_PER_NODE} \
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../../.. && pwd)"
 TRAINING_DIR="${REPO_ROOT}/src/Vagueness_Judge/training"
+
+# Convert TRAIN_DATA_PATH to absolute path if it's relative
+if [[ "${TRAIN_DATA_PATH}" != /* ]]; then
+    TRAIN_DATA_PATH="${REPO_ROOT}/${TRAIN_DATA_PATH}"
+fi
+
 cd "${TRAINING_DIR}"
 
 # Modelo a entrenar (nombre de carpeta dentro de src/base_models/)

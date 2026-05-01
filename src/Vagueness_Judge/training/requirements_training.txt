@@ -1,0 +1,11 @@
+# Vagueness Judge training dependencies
+# Install CUDA PyTorch FIRST: pip install torch --index-url https://download.pytorch.org/whl/cu121
+
+transformers>=4.40
+peft>=0.10
+bitsandbytes>=0.43
+accelerate>=0.30
+trl>=0.9
+datasets>=2.18
+ipython>=7.0
+tqdm>=4.55

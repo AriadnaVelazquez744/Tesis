@@ -226,3 +226,8 @@ tesis_local.tar
 
 .cursor/
 .vscode/
+
+# training models
+src/Vagueness_Judge/trained_models/
+src/Vagueness_Judge/trained_models_full/
+src/MIDLM/trained_models/
