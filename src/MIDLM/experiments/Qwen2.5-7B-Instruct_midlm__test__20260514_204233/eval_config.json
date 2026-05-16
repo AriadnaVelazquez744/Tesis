@@ -1,0 +1,16 @@
+{
+  "checkpoint_dir": "trained_models/Qwen2.5-7B-Instruct_midlm",
+  "data_json": "/home/gia/AriadnaVR/thesis/midlm_training/data/WeaveClinc150_rewritten.json",
+  "split": "test",
+  "max_k": 3,
+  "max_seq_length": 256,
+  "batch_size": 8,
+  "load_in_4bit": true,
+  "bf16": true,
+  "fp16": false,
+  "limit": null,
+  "experiments_dir": "/home/gia/AriadnaVR/thesis/midlm_training/experiments",
+  "save_predictions": true,
+  "resume": false,
+  "eval_ckpt_steps": 100
+}

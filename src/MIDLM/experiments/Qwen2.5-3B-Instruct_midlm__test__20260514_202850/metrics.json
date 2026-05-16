@@ -1,0 +1,9 @@
+{
+  "checkpoint_dir": "trained_models/Qwen2.5-3B-Instruct_midlm",
+  "split": "test",
+  "num_examples": 2000,
+  "exact_match_accuracy": 0.3065,
+  "k_accuracy": 0.9495,
+  "micro_f1": 0.705300901250121,
+  "macro_f1": 0.6972816205005526
+}
