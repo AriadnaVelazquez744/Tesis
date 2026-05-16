@@ -7,14 +7,40 @@ import logging
 from pathlib import Path
 from typing import Any
 
+from unsloth import FastLanguageModel
+
 import torch
 from transformers import Trainer, TrainingArguments
-
-from unsloth import FastLanguageModel
 
 from midlm.data import MIDLMDataCollator, WeaveMultiIntentDataset, build_intent_vocab, load_weave_json
 from midlm.model import MIDLMForMultiIntent
 
+
+class MIDLMTrainer(Trainer):
+    def _save(self, output_dir=None, state_dict=None):
+        output_dir = output_dir or self.args.output_dir
+        import os
+        os.makedirs(output_dir, exist_ok=True)
+        logger.info("Saving model checkpoint to %s", output_dir)
+
+        if state_dict is None:
+            state_dict = self.model.state_dict()
+
+        torch.save(state_dict, os.path.join(output_dir, "pytorch_model.bin"))
+
+        if self.processing_class is not None:
+            self.processing_class.save_pretrained(output_dir)
+        elif (
+            self.data_collator is not None
+            and hasattr(self.data_collator, "tokenizer")
+            and self.data_collator.tokenizer is not None
+        ):
+            self.data_collator.tokenizer.save_pretrained(output_dir)
+
+        torch.save(self.args, os.path.join(output_dir, "training_args.bin"))
+
+
+SCRIPT_DIR = Path(__file__).resolve().parent
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("train_midlm_unsloth")
@@ -67,7 +93,6 @@ def load_backbone_with_lora(args: argparse.Namespace):
         lora_dropout=float(args.lora_dropout),
         target_modules=target_modules,
         bias="none",
-        task_type="CAUSAL_LM",
     )
     try:
         backbone = FastLanguageModel.for_training(backbone)
@@ -108,7 +133,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--max_seq_length", type=int, default=512)
     p.add_argument("--batch_size_per_device", type=int, default=1)
     p.add_argument("--gradient_accumulation_steps", type=int, default=8)
-    p.add_argument("--gradient_checkpointing", action="store_true")
+    p.add_argument("--gradient_checkpointing", action=argparse.BooleanOptionalAction, default=True,
+                   help="Gradient checkpointing (default). Use --no-gradient-checkpointing to disable.")
 
     # Optimization
     p.add_argument("--epochs", type=int, default=1)
@@ -124,10 +150,13 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--save_steps", type=int, default=400)
     p.add_argument("--save_total_limit", type=int, default=2)
 
-    # Unsloth / precision
-    p.add_argument("--load_in_4bit", action="store_true")
-    p.add_argument("--bf16", action="store_true")
-    p.add_argument("--fp16", action="store_true")
+    # Unsloth / precision (all default to True for 12GB VRAM)
+    p.add_argument("--load_in_4bit", action=argparse.BooleanOptionalAction, default=True,
+                   help="4-bit quantization (default). Use --no-load_in_4bit to disable.")
+    p.add_argument("--bf16", action=argparse.BooleanOptionalAction, default=True,
+                   help="bfloat16 mixed precision (default). Use --no-bf16 to disable.")
+    p.add_argument("--fp16", action="store_true",
+                   help="fp16 mixed precision (only relevant with --no-bf16).")
 
     # LoRA
     p.add_argument("--lora_r", type=int, default=16)
@@ -147,6 +176,14 @@ def parse_args() -> argparse.Namespace:
     # Quick smoke run
     p.add_argument("--max_train_samples", type=int, default=None)
     p.add_argument("--max_eval_samples", type=int, default=500)
+
+    # Resume
+    p.add_argument(
+        "--resume_from_checkpoint",
+        type=str,
+        default=None,
+        help="Path to a checkpoint directory to resume training from.",
+    )
 
     return p.parse_args()
 
@@ -223,7 +260,7 @@ def main() -> int:
         gradient_accumulation_steps=int(args.gradient_accumulation_steps),
         weight_decay=float(args.weight_decay),
         max_grad_norm=float(args.max_grad_norm),
-        warmup_ratio=float(args.warmup_ratio),
+        warmup_steps=0,
         logging_steps=int(args.logging_steps),
         save_steps=int(args.save_steps),
         save_total_limit=int(args.save_total_limit),
@@ -233,21 +270,22 @@ def main() -> int:
         report_to=[],
         seed=int(args.seed),
         remove_unused_columns=False,
-        evaluation_strategy="steps",
+        dataloader_pin_memory=False,
+        eval_strategy="steps",
         eval_steps=int(args.save_steps),
     )
 
-    trainer = Trainer(
+    trainer = MIDLMTrainer(
         model=model,
         args=training_args,
         train_dataset=train_ds,
         eval_dataset=eval_ds,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         data_collator=collator,
     )
 
     logger.info("Starting training. Output: %s", str(out_dir))
-    trainer.train()
+    trainer.train(resume_from_checkpoint=args.resume_from_checkpoint)
 
     # Save LoRA adapter + tokenizer in the same output folder.
     try:

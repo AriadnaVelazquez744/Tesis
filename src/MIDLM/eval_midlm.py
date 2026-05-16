@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import warnings
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Set
@@ -18,8 +19,12 @@ from midlm.decode import decode_topk_by_predicted_k
 from midlm.metrics import compute_metrics
 from midlm.model import MIDLMForMultiIntent
 
+warnings.filterwarnings("ignore", message="The attention mask API under.*")
+warnings.filterwarnings("ignore", message=".*AttentionMaskConverter.*")
 
-logging.basicConfig(level=logging.INFO)
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("eval_midlm")
 
 
@@ -48,13 +53,18 @@ def parse_args() -> argparse.Namespace:
         help="Directory produced by train_midlm_unsloth.py (contains intent_vocab.json + adapter files).",
     )
     p.add_argument("--data_json", type=str, default="src/MIDLM/data/WeaveClinc150_rewritten.json")
-    p.add_argument("--split", type=str, default="validation", choices=["train", "validation", "test"])
+    p.add_argument("--split", type=str, default="test", choices=["train", "validation", "test"])
     p.add_argument("--max_k", type=int, default=3)
     p.add_argument("--max_seq_length", type=int, default=512)
     p.add_argument("--batch_size", type=int, default=8)
-    p.add_argument("--load_in_4bit", action="store_true")
-    p.add_argument("--bf16", action="store_true")
-    p.add_argument("--fp16", action="store_true")
+
+    p.add_argument("--load_in_4bit", action=argparse.BooleanOptionalAction, default=True,
+                   help="4-bit quantization (default). Use --no-load_in_4bit to disable.")
+    p.add_argument("--bf16", action=argparse.BooleanOptionalAction, default=True,
+                   help="bfloat16 (default). Use --no-bf16 to disable.")
+    p.add_argument("--fp16", action="store_true",
+                   help="fp16 mixed precision (only relevant with --no-bf16).")
+
     p.add_argument("--limit", type=int, default=None)
     p.add_argument(
         "--experiments_dir",
@@ -67,6 +77,19 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="If set, save per-example predicted/gold intent ids for later comparisons.",
     )
+
+    p.add_argument(
+        "--resume",
+        action="store_true",
+        help="Resume evaluation from last saved checkpoint.",
+    )
+    p.add_argument(
+        "--eval_ckpt_steps",
+        type=int,
+        default=100,
+        help="Save eval checkpoint every N batches.",
+    )
+
     return p.parse_args()
 
 
@@ -124,6 +147,9 @@ def main() -> int:
     model.num_head.load_state_dict(heads["num_head"])
     model.eval()
 
+    model.intent_head.to(dtype=dtype)
+    model.num_head.to(dtype=dtype)
+
     data = load_weave_json(args.data_json)
     rows = data[args.split]
     if args.limit is not None:
@@ -133,16 +159,36 @@ def main() -> int:
     collator = MIDLMDataCollator(tokenizer, max_seq_length=args.max_seq_length)
     dl = DataLoader(ds, batch_size=int(args.batch_size), shuffle=False, collate_fn=collator)
 
+    ckpt_name = ckpt.name
+    eval_ckpt_dir = Path(args.experiments_dir) / f".eval_ckpt__{ckpt_name}__{args.split}"
+    eval_ckpt_path = eval_ckpt_dir / "state.pt"
+
     pred_sets: List[Set[int]] = []
     gold_sets: List[Set[int]] = []
     pred_k: List[int] = []
     gold_k: List[int] = []
+    start_batch = 0
+
+    if args.resume and eval_ckpt_path.exists():
+        saved = torch.load(eval_ckpt_path, map_location="cpu")
+        pred_sets = saved["pred_sets"]
+        gold_sets = saved["gold_sets"]
+        pred_k = saved["pred_k"]
+        gold_k = saved["gold_k"]
+        start_batch = saved["batch_idx"] + 1
+        logger.info(
+            "Resumed from checkpoint: batch %d, %d examples already processed",
+            start_batch, len(pred_sets),
+        )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
     with torch.no_grad():
-        for batch in dl:
+        for batch_idx, batch in enumerate(dl):
+            if batch_idx < start_batch:
+                continue
+
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
             y_multi = batch["labels_multi_hot"]
@@ -161,6 +207,30 @@ def main() -> int:
                 gold_sets.append(gold_ids)
                 pred_k.append(int(decoded[i].k))
                 gold_k.append(int(y_num[i].item()) + 1)
+
+            if (batch_idx + 1) % 50 == 0:
+                logger.info("Progress: batch %d / %d (%d examples)", batch_idx + 1, len(dl), len(pred_sets))
+
+            if (batch_idx + 1) % args.eval_ckpt_steps == 0:
+                eval_ckpt_dir.mkdir(parents=True, exist_ok=True)
+                torch.save(
+                    {
+                        "pred_sets": pred_sets,
+                        "gold_sets": gold_sets,
+                        "pred_k": pred_k,
+                        "gold_k": gold_k,
+                        "batch_idx": batch_idx,
+                    },
+                    eval_ckpt_path,
+                )
+                logger.info("Saved eval checkpoint at batch %d", batch_idx + 1)
+
+    if eval_ckpt_path.exists():
+        eval_ckpt_path.unlink()
+        try:
+            eval_ckpt_dir.rmdir()
+        except OSError:
+            pass
 
     metrics = compute_metrics(
         pred_sets=pred_sets,
@@ -212,4 +282,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -50,34 +50,32 @@ This repo expects the base models to be stored locally as Hugging Face model fol
 
 ## Training command (recommended first run)
 
+All VRAM-saving defaults are on by default (4-bit, bf16, gradient checkpointing).  
 Start with a smaller model to validate everything fits on 12GB:
 
 ```bash
 uv run python src/MIDLM/train_midlm_unsloth.py \
   --model_dir_name Qwen2.5-3B-Instruct \
   --data_json src/MIDLM/data/WeaveClinc150_rewritten.json \
-  --max_k 3 \
-  --max_seq_length 384 \
-  --load_in_4bit \
-  --bf16 \
-  --batch_size_per_device 1 \
-  --gradient_accumulation_steps 8 \
-  --gradient_checkpointing \
+  --max_seq_length 512 \
   --epochs 1 \
   --lr 2e-4
 ```
 
-Then try a 7B model with stricter settings:
+For a 7B model with tighter memory:
 
 ```bash
 uv run python src/MIDLM/train_midlm_unsloth.py \
   --model_dir_name Mistral-7B-Instruct-v0.3 \
   --max_seq_length 256 \
-  --load_in_4bit \
-  --bf16 \
-  --batch_size_per_device 1 \
-  --gradient_accumulation_steps 16 \
-  --gradient_checkpointing
+  --gradient_accumulation_steps 16
+```
+
+Disable defaults if needed (e.g. to load in 16-bit):
+
+```bash
+uv run python src/MIDLM/train_midlm_unsloth.py \
+  --no-load_in_4bit --no-bf16 --no-gradient-checkpointing
 ```
 
 Artifacts are written to:

@@ -55,6 +55,20 @@ class MIDLMForMultiIntent(nn.Module):
         self.intent_head = nn.Linear(hidden_size, self.num_intents)
         self.num_head = nn.Linear(hidden_size, self.max_k)
 
+    def gradient_checkpointing_enable(self, **kwargs):
+        return self.backbone.gradient_checkpointing_enable(**kwargs)
+
+    def state_dict(self, *args, **kwargs):
+        sd = super().state_dict(*args, **kwargs)
+        seen_ids = {}
+        for key in list(sd.keys()):
+            tid = id(sd[key])
+            if tid in seen_ids:
+                sd[key] = sd[key].clone()
+            else:
+                seen_ids[tid] = key
+        return sd
+
     def forward(
         self,
         *,
