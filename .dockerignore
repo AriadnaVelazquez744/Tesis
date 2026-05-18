@@ -2,12 +2,20 @@ State_of_art/
 
 # Artefactos locales (no van a la imagen; el venv se crea en el Dockerfile).
 .venv/
+.venv-amr/
 .git/
+.env
 tesis_local.tar
 
-# Evita empacar pesos de modelos (se descargan/usan por volumen).
-src/base_models/cache/
-src/base_models/*/
+# Pesos de modelos y datos montados por volumen en runtime.
+src/base_models/
+src/MIDLM/data/
+src/MIDLM/trained_models/
+src/MIDLM/experiments/
+src/Vagueness_Judge/training_models/
+src/TEXTOIR/
+src/Semantic_Grounding/
+storage/
 
 # No hace falta para runtime dentro de la imagen.
 logs/
