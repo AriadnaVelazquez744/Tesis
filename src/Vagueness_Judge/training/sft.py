@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import torch
+from sklearn.model_selection import train_test_split
 from transformers import Trainer, TrainingArguments, AutoTokenizer
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
@@ -245,6 +246,9 @@ def main():
     parser.add_argument("--save_total_limit", type=int, default=2)
     parser.add_argument("--seed", type=int, default=0)
 
+    parser.add_argument("--validation_split", type=float, default=0.15,
+                        help="Fraction of training data to hold out for validation")
+
     parser.add_argument("--max_seq_length", type=int, default=1024)
 
     parser.add_argument("--load_in_4bit", action="store_true", default=True,
@@ -269,12 +273,33 @@ def main():
     model, tokenizer = load_model_and_tokenizer(args)
 
     raw_dataset = load_raw_dataset(args)
+
+    # Train/validation split
+    if args.validation_split > 0:
+        train_raw, val_raw = train_test_split(
+            raw_dataset, test_size=args.validation_split, random_state=args.seed
+        )
+        logger.info("Split dataset: train=%d, validation=%d", len(train_raw), len(val_raw))
+    else:
+        train_raw, val_raw = raw_dataset, []
+
     train_dataset = PromptIterableDataset(
-        raw_dataset,
+        train_raw,
         tokenizer=tokenizer,
         max_seq_length=args.max_seq_length,
         teacher_forcing=True,
         truncate_method="tail",
+    )
+    val_dataset = (
+        PromptIterableDataset(
+            val_raw,
+            tokenizer=tokenizer,
+            max_seq_length=args.max_seq_length,
+            teacher_forcing=True,
+            truncate_method="tail",
+        )
+        if val_raw
+        else None
     )
 
     train_data_collator = lambda features: collator(tokenizer, features)
@@ -291,6 +316,7 @@ def main():
         learning_rate=args.lr,
         per_device_train_batch_size=args.batch_size_per_device,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
+        eval_strategy="epoch" if val_dataset else "no",
         weight_decay=args.weight_decay,
         max_grad_norm=args.max_grad_norm,
         warmup_ratio=args.warmup_ratio,
@@ -310,6 +336,7 @@ def main():
         model=model,
         args=training_args,
         train_dataset=train_dataset,
+        eval_dataset=val_dataset,
         data_collator=train_data_collator,
     )
 
@@ -325,6 +352,21 @@ def main():
 
     model.save_pretrained(str(exp_output))
     tokenizer.save_pretrained(str(exp_output))
+
+    # Save train_config.json so evaluation knows which base model to use
+    base_dir = Path(__file__).resolve().parents[2]
+    base_models_dir = base_dir / "base_models"
+    model_path = str((base_models_dir / args.model_dir_name).resolve())
+    train_config = {
+        "model_path": model_path,
+        "train_data_path": str(Path(args.train_data_path).resolve()),
+        "validation_split": args.validation_split,
+        "max_seq_length": args.max_seq_length,
+        "epochs": args.epochs,
+        "lr": args.lr,
+        "seed": args.seed,
+    }
+    (exp_output / "train_config.json").write_text(json.dumps(train_config, indent=2), encoding="utf-8")
     logger.info("Training finished. Saved to: %s", str(exp_output))
 
 

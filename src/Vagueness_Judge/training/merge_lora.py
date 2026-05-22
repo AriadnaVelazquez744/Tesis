@@ -24,7 +24,7 @@ def main():
     
     args = parser.parse_args()
     
-    print(f"Loading base model from: {args.base_model_path}")
+    print("Loading base model from: {}".format(args.base_model_path))
     
     # Determine dtype
     if args.bf16:
@@ -34,12 +34,12 @@ def main():
     else:
         dtype = torch.float32
     
-    # Load base model
+    # Load base model on CPU for merging (avoid GPU OOM during dequantization)
     base_model = AutoModelForCausalLM.from_pretrained(
         args.base_model_path,
         torch_dtype=dtype,
         trust_remote_code=True,
-        device_map="auto"
+        device_map="cpu"  # Merge on CPU to avoid memory issues
     )
     
     # Load tokenizer from base model
@@ -48,7 +48,7 @@ def main():
         trust_remote_code=True
     )
     
-    print(f"Loading LoRA adapter from: {args.lora_adapter_path}")
+    print("Loading LoRA adapter from: {}".format(args.lora_adapter_path))
     
     # Load LoRA adapter on top of base model
     model = PeftModel.from_pretrained(base_model, args.lora_adapter_path)
@@ -62,15 +62,23 @@ def main():
     output_dir = Path(args.output_path)
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    print(f"Saving merged model to: {output_dir}")
+    print("Saving merged model to: {}".format(output_dir))
     
     # Save merged model and tokenizer
-    model.save_pretrained(str(output_dir))
+    try:
+        model.save_pretrained(str(output_dir), safe_serialization=True)
+    except Exception as e:
+        print("Warning: Standard save failed ({}), trying alternative...".format(e))
+        # Save manually
+        state_dict = {k: v.cpu() for k, v in model.state_dict().items()}
+        torch.save(state_dict, str(output_dir / "pytorch_model.bin"))
+        print("Saved model weights to {}/pytorch_model.bin".format(output_dir))
+    
     tokenizer.save_pretrained(str(output_dir))
     
-    print(f"Done! Merged model saved to: {output_dir}")
-    print(f"Model size should be around 6GB for 3B models, 14GB for 7B models")
-    print(f"You can now load this in LM Studio directly from: {output_dir}")
+    print("Done! Merged model saved to: {}".format(output_dir))
+    print("Model size should be around 6GB for 3B models, 14GB for 7B models")
+    print("You can now load this in LM Studio directly from: {}".format(output_dir))
 
 
 if __name__ == "__main__":
