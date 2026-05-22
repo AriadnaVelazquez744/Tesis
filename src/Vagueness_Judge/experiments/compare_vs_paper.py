@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 OUR_DIR = Path(__file__).resolve().parent / "outputs"
-PAPER_DIR = Path(__file__).resolve().parent.parent.parent / "Tell_Me_More-master" / "data" / "user_interaction_records" / "metrics"
+PAPER_DIR = Path(__file__).resolve().parent.parent / "data" / "user_interaction_records_metrics"
 
 ORIGINAL_NAME = {
     "mistral-7b-instruct-v0.2-hf": "Mistral-7B-Instruct-v0.2 (paper)",

@@ -8,11 +8,11 @@ import json
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_DIR = SCRIPT_DIR.parent.parent  # ~/thesis/JdV_Training
-TRAINING_MODELS_DIR = PROJECT_DIR / "src" / "Vagueness_Judge" / "training_models"
-BASE_MODELS_DIR = PROJECT_DIR.parent / "base_models"  # ~/thesis/base_models
+PROJECT_DIR = SCRIPT_DIR.parent.parent.parent  
+TRAINING_MODELS_DIR = PROJECT_DIR / "src" / "Vagueness_Judge" / "jdv_adapters"
+BASE_MODELS_DIR = PROJECT_DIR / "src" / "base_models"  # ~/thesis/base_models
 
-OLD_BASE = "/home/gia/AriadnaVR/JdV_Training/src/base_models"
+OLD_BASE = "/home/ari/Collage/TESIS/Tesis/src/base_models"
 
 def fix_one(adapter_dir: Path) -> bool:
     config_path = adapter_dir / "adapter_config.json"

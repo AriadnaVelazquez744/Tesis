@@ -3,16 +3,18 @@ import os
 from collections import OrderedDict
 from pathlib import Path
 
+from Vagueness_Judge.experiments.compare_best_vs_paper import OUTPUT_DIR
+
 os.environ["HF_HOME"] = "/tmp/hf-cache"
 os.environ["HF_MODULES_CACHE"] = "/tmp/hf-cache/modules"
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_DIR = SCRIPT_DIR.parent.parent
-BASE_MODELS_DIR = PROJECT_DIR.parent / "base_models"
-TRAINING_MODELS_DIR = PROJECT_DIR / "src" / "Vagueness_Judge" / "training_models"
+PROJECT_DIR = SCRIPT_DIR.parent.parent.parent
+BASE_MODELS_DIR = PROJECT_DIR/ "src" / "base_models"
+TRAINING_MODELS_DIR = PROJECT_DIR / "src" / "Vagueness_Judge" / "training"
 
-IN3_TEST_PATH = PROJECT_DIR / "Tell_Me_More-master" / "data" / "IN3" / "test.jsonl"
-LABELLER_PATH = PROJECT_DIR / "Tell_Me_More-master" / "data" / "data_labeling" / "test_data_report_mix.jsonl"
+IN3_TEST_PATH = PROJECT_DIR / "src" / "Vagueness_Judge" / "data" / "IN3" / "test.jsonl"
+LABELLER_PATH = PROJECT_DIR / "src" / "Vagueness_Judge" / "data" / "data_labeling" / "test_data_report_mix.jsonl"
 OUTPUTS_DIR = SCRIPT_DIR / "outputs"
 
 TASK_DESCRIPTION = (

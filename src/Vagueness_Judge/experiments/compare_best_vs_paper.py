@@ -5,7 +5,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent.parent
 OUR_DIR = BASE / "src" / "experiments" / "outputs"
-PAPER_DIR = BASE / "Tell_Me_More-master" / "data" / "user_interaction_records" / "metrics"
+PAPER_DIR = BASE / "src" / "experiments" / "data" / "user_interaction_records_metrics"
 
 PAPER_MODELS = [
     ("mistral-7b-instruct-v0.2-hf", "Mistral-7B v0.2"),
