@@ -228,6 +228,5 @@ tesis_local.tar
 .vscode/
 
 # training models
-src/Vagueness_Judge/trained_models/
-src/Vagueness_Judge/trained_models_full/
+src/Vagueness_Judge/jdv_adapters/
 src/MIDLM/trained_models/
