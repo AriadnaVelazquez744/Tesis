@@ -1,0 +1,2 @@
+# Additional dependencies for evaluation experiments
+sentence-transformers>=2.2
