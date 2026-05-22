@@ -1,0 +1,18 @@
+{
+  "vagueness_judgment_accuracy": 0.7963,
+  "missing_details_recover_rate": {
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "total_recover_rate": 0.0
+  },
+  "summary_intention_coverage_rate": 0.0,
+  "options_presenting_rate": 0.0,
+  "options_reasonable_rate": null,
+  "average_provided_options": 0.0,
+  "average_inquired_missing_details_per_round": 0.0,
+  "average_conversation_rounds": 1.037,
+  "average_inquired_missing_details": 0.0,
+  "num_examples": 108,
+  "model": "Phi-3-mini-4k-instruct"
+}
