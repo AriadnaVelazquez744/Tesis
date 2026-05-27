@@ -229,4 +229,4 @@ tesis_local.tar
 
 # training models
 src/Vagueness_Judge/jdv_adapters/
-src/MIDLM/trained_models/
+src/MIDLM/midlm_adapters/
