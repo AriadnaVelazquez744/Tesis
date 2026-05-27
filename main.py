@@ -64,7 +64,12 @@ def main() -> None:
         with st.chat_message("assistant"):
             st.markdown(assistant_content)
 
+            meta = response.get("meta", {})
+            vagueness_raw = meta.get("vagueness_raw")
+            if vagueness_raw:
+                with st.expander("🔍 JDV Debug"):
+                    st.code(vagueness_raw, language="json", line_numbers=True)
+
 
 if __name__ == "__main__":
     main()
-

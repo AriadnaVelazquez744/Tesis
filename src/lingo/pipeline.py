@@ -48,7 +48,7 @@ def run_main_pipeline(
             "content": vagueness_result["assistant_message"],
             "meta": {
                 "pipeline_phase": "vagueness_clarification",
-                "tone": vagueness_result.get("tone"),
+                "vagueness_raw": vagueness_result.get("raw_response", ""),
                 "engine": "vagueness_controller",
             },
             "clarification_state": updated_state,
@@ -56,7 +56,6 @@ def run_main_pipeline(
 
     completed_query = vagueness_result["completed_query"]
     summary = vagueness_result.get("summary", "")
-    tone = vagueness_result.get("tone")
 
     # Analysis configuration is passed through `config` so checkpoints/backbones
     # can be swapped without changing pipeline code.
@@ -138,7 +137,8 @@ def run_main_pipeline(
             "pipeline_phase": "resolved_and_analyzed_structured",
             "completed_query": completed_query,
             "summary": summary,
-            "tone": tone,
+            "summary_thought": vagueness_result.get("summary_thought", ""),
+            "vagueness_raw": vagueness_result.get("raw_response", ""),
             "analysis_engine": "MIDLM+TEXTOIR",
         }
     )

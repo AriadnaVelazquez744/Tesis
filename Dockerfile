@@ -52,7 +52,7 @@ RUN . .venv-amr/bin/activate && \
     uvicorn==0.24.0 \
     pydantic==2.5.0 \
     "numpy<1.24" \
-    "torch>=2.1.0" \
+    "torch==2.1.0" \
     "transformers>=4.35,<4.40" \
     "fairseq<=0.10.2" \
     "penman>=1.1.0" \

@@ -47,7 +47,7 @@ def handle_vagueness_turn(
     Returns dict with:
     - status: "needs_user_input" | "resolved"
     - assistant_message: text to display in Streamlit when clarification is needed
-    - completed_query / summary / tone when resolved
+    - completed_query / summary / raw_response when resolved
     - updated_state
     """
     state = state or default_clarification_state()
@@ -59,7 +59,8 @@ def handle_vagueness_turn(
                 "status": "resolved",
                 "completed_query": initial_decision.get("completed_query", user_text),
                 "summary": initial_decision.get("summary", ""),
-                "tone": initial_decision.get("tone"),
+                "summary_thought": initial_decision.get("summary_thought", ""),
+                "raw_response": initial_decision.get("raw_response", ""),
                 "updated_state": _reset_state(state),
             }
 
@@ -74,11 +75,14 @@ def handle_vagueness_turn(
             "Could you provide more details?",
         )
         state["pending_question"] = question
-        state["turns"].append({"role": "assistant", "content": question})
+        state["turns"].append({
+            "role": "assistant",
+            "content": initial_decision.get("raw_response", question),
+        })
         return {
             "status": "needs_user_input",
             "assistant_message": question,
-            "tone": initial_decision.get("tone"),
+            "raw_response": initial_decision.get("raw_response", ""),
             "updated_state": state,
         }
 
@@ -90,14 +94,15 @@ def handle_vagueness_turn(
         if t["role"] == "user" and t["content"] != state["initial_query"]
     ]
 
-    refined = evaluate_refined_query(state["initial_query"], clarification_texts)
+    refined = evaluate_refined_query(state["initial_query"], clarification_texts, state["turns"])
     if refined.get("status") == "resolved":
         state["resolved"] = True
         return {
             "status": "resolved",
             "completed_query": refined.get("completed_query", state["initial_query"]),
             "summary": refined.get("summary", ""),
-            "tone": refined.get("tone"),
+            "summary_thought": refined.get("summary_thought", ""),
+            "raw_response": refined.get("raw_response", ""),
             "updated_state": _reset_state(state),
         }
 
@@ -106,10 +111,13 @@ def handle_vagueness_turn(
         "Could you clarify the expected format and constraints?",
     )
     state["pending_question"] = question
-    state["turns"].append({"role": "assistant", "content": question})
+    state["turns"].append({
+        "role": "assistant",
+        "content": refined.get("raw_response", question),
+    })
     return {
         "status": "needs_user_input",
         "assistant_message": question,
-        "tone": refined.get("tone"),
+        "raw_response": refined.get("raw_response", ""),
         "updated_state": state,
     }

@@ -15,6 +15,12 @@ services:
       # Requerido para inferencia/chatbot si usas un servidor local (ej. LLMStudio).
       LLMSTUDIO_BASE_URL: ${LLMSTUDIO_BASE_URL:-http://host.docker.internal:1234}
 
+      # Endpoint del modelo Vagueness Judge en LM Studio (externo).
+      VAGUE_ENDPOINT_URL: ${VAGUE_ENDPOINT_URL:-}
+
+      # Identificador del modelo cargado en LM Studio.
+      VAGUE_MODEL_ID: ${VAGUE_MODEL_ID:-}
+
       # Cache de Hugging Face dentro del contenedor.
       HF_HOME: /root/.cache/huggingface
 
@@ -25,6 +31,7 @@ services:
     volumes:
       # Código y scripts ya van en la imagen. Persistimos los datos que cambian:
       - ./src/base_models:/app/src/base_models
+      - ./src/Vagueness_Judge/runtime:/app/src/Vagueness_Judge/runtime
       - ./src/Vagueness_Judge/training_models:/app/src/Vagueness_Judge/training_models
       - ./src/MIDLM/data:/app/src/MIDLM/data
       - ./src/MIDLM/trained_models:/app/src/MIDLM/trained_models
