@@ -1,3 +1,5 @@
+import uuid
+
 import streamlit as st
 
 from src.Vagueness_Judge.runtime import default_clarification_state
@@ -5,12 +7,15 @@ from src.lingo.pipeline import run_main_pipeline
 
 
 def _init_session_state() -> None:
+    if "session_id" not in st.session_state:
+        st.session_state.session_id = str(uuid.uuid4())[:8]
     if "messages" not in st.session_state:
         st.session_state.messages = []
     if "config" not in st.session_state:
         st.session_state.config = {
             "kb_sources": ["default"],
             "skills": ["core"],
+            "session_id": st.session_state.session_id,
         }
     if "clarification_state" not in st.session_state:
         st.session_state.clarification_state = default_clarification_state()

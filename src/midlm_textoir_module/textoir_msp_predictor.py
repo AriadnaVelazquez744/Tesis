@@ -25,8 +25,8 @@ class TextoirMSPRuntime:
 
 
 def _textoir_open_intent_detection_root() -> Path:
-    tesis_root = Path(__file__).resolve().parents[3]
-    return tesis_root / "src" / "TEXTOIR" / "open_intent_detection"
+    project_root = Path(__file__).resolve().parents[2]
+    return project_root / "src" / "TEXTOIR" / "open_intent_detection"
 
 
 def _ensure_textoir_on_path() -> None:

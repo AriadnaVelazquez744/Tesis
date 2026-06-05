@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import json
+import os
+import re
+from datetime import datetime
 from typing import Any, Dict, List, TypedDict
 
 from src.Vagueness_Judge.runtime import (
@@ -12,6 +16,34 @@ from src.buffer_structure.cao_formatters import format_cao_as_markdown
 from src.AMR.amr_processor import process_amr_into_cao
 from .engine import process_query
 from src.Semantic_Grounding.KeyBERT_processor import extract_and_ground
+
+
+def _sanitize_filename(text: str, max_len: int = 50) -> str:
+    s = text.lower().strip()
+    s = re.sub(r'[^a-z0-9\s_-]', '', s)
+    s = re.sub(r'[\s_-]+', '_', s)
+    return s[:max_len].strip('_')
+
+
+def _save_cao_to_storage(cao: dict, completed_query: str, config: dict) -> None:
+    try:
+        storage_dir = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "../../storage/cao")
+        )
+        os.makedirs(storage_dir, exist_ok=True)
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        session_id = config.get("session_id", "default")
+        query_slug = _sanitize_filename(completed_query) or "resolved_query"
+
+        filename = f"cao_{timestamp}_sess_{session_id}_{query_slug}.json"
+        filepath = os.path.join(storage_dir, filename)
+
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(cao, f, indent=2, ensure_ascii=False)
+        print(f"[STORAGE] CAO saved to: {filepath}")
+    except Exception as e:
+        print(f"[STORAGE] Error saving CAO: {e}")
 
 
 class Message(TypedDict):
@@ -57,9 +89,6 @@ def run_main_pipeline(
     completed_query = vagueness_result["completed_query"]
     summary = vagueness_result.get("summary", "")
 
-    # Analysis configuration is passed through `config` so checkpoints/backbones
-    # can be swapped without changing pipeline code.
-    midlm_checkpoint_dir = config.get("midlm_checkpoint_dir")
     textoir_msp_model_dir = config.get("textoir_msp_model_dir")
 
     textoir_dataset = config.get("textoir_dataset", "oos")
@@ -69,13 +98,10 @@ def run_main_pipeline(
     bert_model_name = str(config.get("textoir_bert_model_name", "bert-base-uncased"))
 
     device_type = config.get("analysis_device_type")
-    midlm_load_in_4bit = bool(config.get("midlm_load_in_4bit", False))
-    midlm_bf16 = bool(config.get("midlm_bf16", False))
 
     analysis_result = analyze_midlm_textoir(
         completed_query=completed_query,
         summary=summary,
-        midlm_checkpoint_dir=midlm_checkpoint_dir,
         textoir_msp_model_dir=textoir_msp_model_dir,
         textoir_dataset=str(textoir_dataset),
         textoir_known_cls_ratio=textoir_known_cls_ratio,
@@ -83,8 +109,6 @@ def run_main_pipeline(
         textoir_seed=textoir_seed,
         bert_model_name=bert_model_name,
         device_type=device_type,
-        midlm_load_in_4bit=midlm_load_in_4bit,
-        midlm_bf16=midlm_bf16,
     )
 
     # Integrate AMR processing into CAO
@@ -142,6 +166,9 @@ def run_main_pipeline(
             "analysis_engine": "MIDLM+TEXTOIR",
         }
     )
+
+    # Persist final CAO to disk
+    _save_cao_to_storage(analysis_result["cao"], completed_query, config)
 
     # Regenerate content with AMR data included
     final_content = format_cao_as_markdown(analysis_result["cao"]) # type: ignore

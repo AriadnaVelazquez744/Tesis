@@ -10,9 +10,9 @@ tesis_local.tar
 # Pesos de modelos y datos montados por volumen en runtime.
 src/base_models/
 src/MIDLM/data/
-src/MIDLM/trained_models/
+src/MIDLM/midlm_adapters/
 src/MIDLM/experiments/
-src/Vagueness_Judge/training_models/
+src/Vagueness_Judge/jdv_adapters/
 src/TEXTOIR/
 src/Semantic_Grounding/
 storage/

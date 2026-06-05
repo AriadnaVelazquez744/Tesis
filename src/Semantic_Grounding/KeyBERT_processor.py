@@ -1,9 +1,14 @@
-from typing import Any, Dict
-from keybert import KeyBERT
+from typing import Any, Dict, Optional
 
-# Initialize globally to keep the model in memory.
-# all-MiniLM-L6-v2 is highly optimized for English sentence embeddings.
-kw_model = KeyBERT("all-MiniLM-L6-v2")
+_kw_model: Any = None
+
+
+def _get_kw_model():
+    global _kw_model
+    if _kw_model is None:
+        from keybert import KeyBERT
+        _kw_model = KeyBERT("all-MiniLM-L6-v2")
+    return _kw_model
 
 
 def extract_and_ground(cao: Dict[str, Any], text: str) -> Dict[str, Any]:
@@ -14,8 +19,9 @@ def extract_and_ground(cao: Dict[str, Any], text: str) -> Dict[str, Any]:
     print(f"[KeyBERT] Extracting anchors for text: {text[:80]}...")
 
     try:
+        model = _get_kw_model()
         # Extract keywords with diversity (MMR) and n-gram range 1-3 for full names/concepts
-        keywords = kw_model.extract_keywords(
+        keywords = model.extract_keywords(
             text,
             keyphrase_ngram_range=(1, 3),
             stop_words="english",

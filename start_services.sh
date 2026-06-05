@@ -14,13 +14,9 @@ RETRY_COUNT=0
 until curl -s http://127.0.0.1:8001/health > /dev/null 2>&1; do
     RETRY_COUNT=$((RETRY_COUNT + 1))
     if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
-        echo "ERROR: AMR service failed to start after $MAX_RETRIES retries"
-        echo "Checking logs..."
-        ps aux | grep uvicorn
-        echo "Port 8001 status:"
-        netstat -tlnp 2>/dev/null | grep 8001 || ss -tlnp | grep 8001 || echo "Port 8001 not listening"
-        kill $AMR_PID 2>/dev/null || true
-        exit 1
+        echo "WARNING: AMR service failed to start after $MAX_RETRIES retries"
+        echo "Continuing without AMR — pipeline will degrade gracefully"
+        break
     fi
     echo "Retry $RETRY_COUNT/$MAX_RETRIES - waiting 30s..."
     sleep 30

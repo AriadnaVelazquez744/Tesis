@@ -21,6 +21,12 @@ services:
       # Identificador del modelo cargado en LM Studio.
       VAGUE_MODEL_ID: ${VAGUE_MODEL_ID:-}
 
+      # Endpoint del clasificador MIDLM (servidor FastAPI propio, puerto 1235).
+      MIDLM_ENDPOINT_URL: ${MIDLM_ENDPOINT_URL:-}
+
+      # Identificador del modelo MIDLM cargado en el servidor.
+      MIDLM_MODEL_ID: ${MIDLM_MODEL_ID:-}
+
       # Cache de Hugging Face dentro del contenedor.
       HF_HOME: /root/.cache/huggingface
 
@@ -32,9 +38,9 @@ services:
       # Código y scripts ya van en la imagen. Persistimos los datos que cambian:
       - ./src/base_models:/app/src/base_models
       - ./src/Vagueness_Judge/runtime:/app/src/Vagueness_Judge/runtime
-      - ./src/Vagueness_Judge/training_models:/app/src/Vagueness_Judge/training_models
+      - ./src/Vagueness_Judge/jdv_adapters:/app/src/Vagueness_Judge/jdv_adapters
       - ./src/MIDLM/data:/app/src/MIDLM/data
-      - ./src/MIDLM/trained_models:/app/src/MIDLM/trained_models
+      - ./src/MIDLM/midlm_adapters:/app/src/MIDLM/midlm_adapters
       - ./src/MIDLM/experiments:/app/src/MIDLM/experiments
       - ./src/TEXTOIR:/app/src/TEXTOIR
       - ./src/Semantic_Grounding:/app/src/Semantic_Grounding

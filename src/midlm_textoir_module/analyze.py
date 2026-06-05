@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any, Dict, Optional, TypedDict, List
 
@@ -20,7 +21,6 @@ def analyze_midlm_textoir(
     *,
     completed_query: str,
     summary: str,
-    midlm_checkpoint_dir: Optional[str],
     textoir_msp_model_dir: Optional[str],
     # TEXTOIR/MSP knobs
     textoir_dataset: str = "oos",
@@ -29,31 +29,27 @@ def analyze_midlm_textoir(
     textoir_seed: int = 0,
     bert_model_name: str = "bert-base-uncased",
     device_type: Optional[str] = None,
-    # MIDLM knobs
-    midlm_load_in_4bit: bool = False,
-    midlm_bf16: bool = False,
 ) -> AnalyzeResult:
     """
     Builds a CAO (Cognitive Analysis Object) for the interface.
+
+    MIDLM reads endpoint config from env (MIDLM_ENDPOINT_URL, MIDLM_MODEL_ID).
+    TEXTOIR loads locally from textoir_msp_model_dir on disk.
     """
 
     buffer_input = f"{completed_query.strip()}\n\n[Summary]\n{summary.strip()}"
 
-    # 1) MIDLM multi-intent selection
+    # 1) MIDLM multi-intent selection (HTTP via env-configurable endpoint)
     selected_intents: List[str] = []
     k: int = 0
     midlm_ok = False
 
-    if _safe_exists(midlm_checkpoint_dir):
+    if os.environ.get("MIDLM_ENDPOINT_URL"):
         try:
-            from .midlm_predictor import predict_topk_intents
+            from .midlm_http_predictor import predict_topk_intents
 
-            selected_intents, k, _intent_logits = predict_topk_intents(
+            selected_intents, k, _raw = predict_topk_intents(
                 text=buffer_input,
-                checkpoint_dir=str(midlm_checkpoint_dir),
-                device_type=device_type,
-                load_in_4bit=midlm_load_in_4bit,
-                bf16=midlm_bf16,
             )
             midlm_ok = True
         except Exception:
@@ -116,7 +112,6 @@ def analyze_midlm_textoir(
 
     # Clean None values for nicer display (optional)
     if "confidence" in cao["intent"] and cao["intent"]["confidence"] is None:
-        # TypedDict allows NotRequired, but we keep key stable by deleting it
         del cao["intent"]["confidence"]  # type: ignore[arg-type]
 
     return {

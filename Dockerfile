@@ -82,9 +82,9 @@ RUN chmod +x ./start_services.sh \
     ./logs \
     ./storage \
     ./src/base_models \
-    ./src/Vagueness_Judge/training_models \
+    ./src/Vagueness_Judge/jdv_adapters \
     ./src/MIDLM/data \
-    ./src/MIDLM/trained_models \
+    ./src/MIDLM/midlm_adapters \
     ./src/MIDLM/experiments \
     ./src/TEXTOIR
 
