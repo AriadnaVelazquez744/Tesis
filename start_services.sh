@@ -23,9 +23,9 @@ until curl -s http://127.0.0.1:8001/health > /dev/null 2>&1; do
 done
 
 echo "=========================================="
-echo "AMR FastAPI service is ready!"
+AMR_STATUS=$(curl -s http://127.0.0.1:8001/health | cat)
+echo "AMR health status: $AMR_STATUS"
 echo "=========================================="
-curl -s http://127.0.0.1:8001/health | cat
 
 sleep 5
 

@@ -47,9 +47,6 @@ services:
       - ./logs:/app/logs
       - ./storage:/app/storage
 
-      # Cache global de Hugging Face (evita descargas repetidas).
-      - hf_cache:/root/.cache/huggingface
-
-volumes:
-  hf_cache:
+      # Cache global de Hugging Face (bind mount al host, para pre-descargar modelos).
+      - ./storage/hf_cache:/root/.cache/huggingface
 

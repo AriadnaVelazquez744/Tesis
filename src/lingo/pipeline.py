@@ -16,6 +16,7 @@ from src.buffer_structure.cao_formatters import format_cao_as_markdown
 from src.AMR.amr_processor import process_amr_into_cao
 from .engine import process_query
 from src.Semantic_Grounding.KeyBERT_processor import extract_and_ground
+from src.Logic_Transformer.transformer import transform_logic
 
 
 def _sanitize_filename(text: str, max_len: int = 50) -> str:
@@ -63,7 +64,7 @@ def run_main_pipeline(
     Flow:
     1. Route user text through vagueness module.
     2. If clarification is required, return assistant question and keep state.
-    3. If resolved, call engine with completed query and return final response.
+    3. If resolved, run full analysis pipeline → Engine Lingo → natural response.
     """
     if history is None:
         history = []
@@ -89,6 +90,13 @@ def run_main_pipeline(
     completed_query = vagueness_result["completed_query"]
     summary = vagueness_result.get("summary", "")
 
+    # Extract the original user query from history
+    original_query = ""
+    for msg in history:
+        if msg.get("role") == "user":
+            original_query = msg["content"]
+            break
+
     textoir_msp_model_dir = config.get("textoir_msp_model_dir")
 
     textoir_dataset = config.get("textoir_dataset", "oos")
@@ -100,6 +108,7 @@ def run_main_pipeline(
     device_type = config.get("analysis_device_type")
 
     analysis_result = analyze_midlm_textoir(
+        original_query=original_query,
         completed_query=completed_query,
         summary=summary,
         textoir_msp_model_dir=textoir_msp_model_dir,
@@ -140,22 +149,32 @@ def run_main_pipeline(
     except Exception as e:
         print(f"[PIPELINE] KeyBERT integration failed: {e}")
 
-    merged_meta: Dict[str, Any] = {}
-    cao_meta = analysis_result["cao"].get("meta", {})
-    if isinstance(cao_meta, dict):
-        merged_meta.update(cao_meta)
+    # Logic Transformation (triple refinement & Tarski typing)
+    try:
+        analysis_result["cao"] = transform_logic(analysis_result["cao"], threshold=0.5)
+    except Exception as e:
+        print(f"[PIPELINE] Logic Transformer execution failed: {e}")
+        analysis_result["cao"].setdefault("meta", {})["logic_transformer_ok"] = False
 
-    # Keep the engine stub meta fields (when available) for easier debugging.
+    # ── Engine Lingo: consume CAO and generate natural-language response ──
     try:
         engine_response = process_query(
             query=completed_query,
             history=history,
             config=config,
+            cao=analysis_result["cao"],  # now passing the full CAO
         )
-        merged_meta.update(dict(engine_response.get("meta", {})))
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[PIPELINE] Engine Lingo failed, falling back to stub: {e}")
+        engine_response = {
+            "content": format_cao_as_markdown(analysis_result["cao"]),
+            "meta": {"engine": "fallback_stub"},
+        }
 
+    # ── assemble final metadata ─────────────────────────────────────────
+    merged_meta: Dict[str, Any] = {}
+
+    # Pipeline-stage meta
     merged_meta.update(
         {
             "pipeline_phase": "resolved_and_analyzed_structured",
@@ -167,14 +186,21 @@ def run_main_pipeline(
         }
     )
 
+    # CAO meta (AMR, KeyBERT, Logic Transformer info)
+    cao_meta = analysis_result["cao"].get("meta", {})
+    if isinstance(cao_meta, dict):
+        merged_meta.update(cao_meta)
+
+    # Engine meta
+    engine_meta = engine_response.get("meta", {})
+    if isinstance(engine_meta, dict):
+        merged_meta.update(engine_meta)
+
     # Persist final CAO to disk
     _save_cao_to_storage(analysis_result["cao"], completed_query, config)
 
-    # Regenerate content with AMR data included
-    final_content = format_cao_as_markdown(analysis_result["cao"]) # type: ignore
-
     return {
-        "content": final_content,
+        "content": engine_response["content"],
         "meta": merged_meta,
         "clarification_state": updated_state,
     }
