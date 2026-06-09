@@ -19,6 +19,7 @@ def _safe_exists(path: Optional[str]) -> bool:
 
 def analyze_midlm_textoir(
     *,
+    original_query: str = "",
     completed_query: str,
     summary: str,
     textoir_msp_model_dir: Optional[str],
@@ -34,22 +35,27 @@ def analyze_midlm_textoir(
     Builds a CAO (Cognitive Analysis Object) for the interface.
 
     MIDLM reads endpoint config from env (MIDLM_ENDPOINT_URL, MIDLM_MODEL_ID).
+    MIDLM uses original_query (raw user text) to avoid misleading the intent
+    classifier with the verbose JDV summary.
     TEXTOIR loads locally from textoir_msp_model_dir on disk.
     """
 
-    buffer_input = f"{completed_query.strip()}\n\n[Summary]\n{summary.strip()}"
+    midlm_input = original_query.strip() if original_query else completed_query.strip()
+    textoir_input = f"{completed_query.strip()}\n\n[Summary]\n{summary.strip()}"
 
     # 1) MIDLM multi-intent selection (HTTP via env-configurable endpoint)
     selected_intents: List[str] = []
     k: int = 0
     midlm_ok = False
 
+    print(f"[ANALYZE] MIDLM input: {midlm_input[:200]} (original_query={bool(original_query)})")
+
     if os.environ.get("MIDLM_ENDPOINT_URL"):
         try:
             from .midlm_http_predictor import predict_topk_intents
 
             selected_intents, k, _raw = predict_topk_intents(
-                text=buffer_input,
+                text=midlm_input,
             )
             midlm_ok = True
         except Exception:
@@ -65,7 +71,7 @@ def analyze_midlm_textoir(
             from .textoir_msp_predictor import predict_msp_ind_oos
 
             status, conf, method_used = predict_msp_ind_oos(
-                text=buffer_input,
+                text=textoir_input,
                 model_output_dir=str(textoir_msp_model_dir),
                 dataset=textoir_dataset,
                 known_cls_ratio=textoir_known_cls_ratio,
@@ -105,6 +111,7 @@ def analyze_midlm_textoir(
             "buffer_input_used": True,
             "midlm_ok": midlm_ok,
             "textoir_method_used": textoir_method_used,
+            "original_query": original_query,
             "completed_query": completed_query,
             "summary": summary,
         },
