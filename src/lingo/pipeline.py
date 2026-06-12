@@ -43,8 +43,48 @@ def _save_cao_to_storage(cao: dict, completed_query: str, config: dict) -> None:
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(cao, f, indent=2, ensure_ascii=False)
         print(f"[STORAGE] CAO saved to: {filepath}")
+
+        # Also save to tests/comparissons/data/CAO_results/ with metadata
+        _save_cao_with_metadata(cao, completed_query, config, timestamp)
     except Exception as e:
         print(f"[STORAGE] Error saving CAO: {e}")
+
+
+def _save_cao_with_metadata(cao: dict, completed_query: str, config: dict, timestamp: str) -> None:
+    """Save CAO wrapped with query metadata to tests/comparissons/data/CAO_results/."""
+    try:
+        results_dir = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "../../tests/comparissons/data/CAO_results")
+        )
+        os.makedirs(results_dir, exist_ok=True)
+
+        session_id = config.get("session_id", "default")
+        query_slug = _sanitize_filename(completed_query, max_len=40) or "query"
+        filename = f"cao_{timestamp}_{session_id}_{query_slug}.json"
+
+        # Deduplicate if same timestamp
+        filepath = os.path.join(results_dir, filename)
+        counter = 1
+        while os.path.exists(filepath):
+            name, ext = os.path.splitext(filename)
+            filepath = os.path.join(results_dir, f"{name}_{counter}{ext}")
+            counter += 1
+
+        record = {
+            "oos": "UNKNOWN",
+            "topic": "unknown",
+            "domain_cluster": "unknown",
+            "vague": False,
+            "query": completed_query,
+            "k": 0,
+            "id": f"auto-{session_id}",
+            "cao": cao,
+        }
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(record, f, indent=2, ensure_ascii=False)
+        print(f"[STORAGE] CAO with metadata saved to: {filepath}")
+    except Exception as e:
+        print(f"[STORAGE] Error saving CAO with metadata: {e}")
 
 
 class Message(TypedDict):

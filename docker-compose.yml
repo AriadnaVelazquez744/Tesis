@@ -27,8 +27,13 @@ services:
       # Identificador del modelo MIDLM cargado en el servidor.
       MIDLM_MODEL_ID: ${MIDLM_MODEL_ID:-}
 
+      # Endpoint del clasificador TEXTOIR (servidor FastAPI propio, puerto 8081).
+      TEXTOIR_ENDPOINT_URL: ${TEXTOIR_ENDPOINT_URL:-}
+
       # Cache de Hugging Face dentro del contenedor.
       HF_HOME: /root/.cache/huggingface
+      # Cache de PyTorch (AMR model y otros) dentro del contenedor.
+      TORCH_HOME: /root/.cache/torch
 
     # Permite acceder al endpoint del host (Linux).
     extra_hosts:
@@ -42,6 +47,7 @@ services:
       - ./src/MIDLM/data:/app/src/MIDLM/data
       - ./src/MIDLM/midlm_adapters:/app/src/MIDLM/midlm_adapters
       - ./src/MIDLM/experiments:/app/src/MIDLM/experiments
+      - ./src/midlm_textoir_module:/app/src/midlm_textoir_module
       - ./src/TEXTOIR:/app/src/TEXTOIR
       - ./src/Semantic_Grounding:/app/src/Semantic_Grounding
       - ./logs:/app/logs
@@ -49,4 +55,7 @@ services:
 
       # Cache global de Hugging Face (bind mount al host, para pre-descargar modelos).
       - ./storage/hf_cache:/root/.cache/huggingface
+
+      # Cache de PyTorch (AMR model, torch hub, etc.).
+      - ./storage/torch_cache:/root/.cache/torch
 

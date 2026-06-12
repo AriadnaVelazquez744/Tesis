@@ -37,7 +37,8 @@ def analyze_midlm_textoir(
     MIDLM reads endpoint config from env (MIDLM_ENDPOINT_URL, MIDLM_MODEL_ID).
     MIDLM uses original_query (raw user text) to avoid misleading the intent
     classifier with the verbose JDV summary.
-    TEXTOIR loads locally from textoir_msp_model_dir on disk.
+    TEXTOIR loads via HTTP when TEXTOIR_ENDPOINT_URL is set, or falls back to
+    loading locally from textoir_msp_model_dir on disk.
     """
 
     midlm_input = original_query.strip() if original_query else completed_query.strip()
@@ -61,12 +62,29 @@ def analyze_midlm_textoir(
         except Exception:
             midlm_ok = False
 
-    # 2) TEXTOIR IND/OOS decision (MSP)
+    # 2) TEXTOIR IND/OOS decision
     oos_ind_status: IntentOOSStatus = "UNKNOWN"
     oos_confidence: Optional[float] = None
     textoir_method_used: Optional[str] = None
 
-    if _safe_exists(textoir_msp_model_dir):
+    textoir_endpoint = os.environ.get("TEXTOIR_ENDPOINT_URL", "")
+
+    if textoir_endpoint:
+        try:
+            from .textoir_http_predictor import predict_ind_oos
+
+            status, conf, method_used = predict_ind_oos(
+                text=textoir_input,
+            )
+            oos_ind_status = status  # type: ignore[assignment]
+            oos_confidence = conf
+            textoir_method_used = method_used
+            print(f"[ANALYZE] TEXTOIR via HTTP: {oos_ind_status} (conf={oos_confidence})")
+        except Exception as e:
+            print(f"[ANALYZE] TEXTOIR HTTP failed, trying local fallback: {e}")
+            oos_ind_status = "UNKNOWN"
+
+    if oos_ind_status == "UNKNOWN" and _safe_exists(textoir_msp_model_dir):
         try:
             from .textoir_msp_predictor import predict_msp_ind_oos
 
@@ -83,7 +101,9 @@ def analyze_midlm_textoir(
             oos_ind_status = status  # type: ignore[assignment]
             oos_confidence = conf
             textoir_method_used = method_used
-        except Exception:
+            print(f"[ANALYZE] TEXTOIR local: {oos_ind_status} (conf={oos_confidence})")
+        except Exception as e:
+            print(f"[ANALYZE] TEXTOIR local also failed: {e}")
             oos_ind_status = "UNKNOWN"
 
     # 3) CAO assembly
