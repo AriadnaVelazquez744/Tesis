@@ -1,0 +1,13 @@
+method,dataset,known_cls_ratio,seed,acc,f1_overall,f1_known,f1_open,best_eval_score,model_path,status
+MSP,oos,0.75,0,80.84,85.5756,85.6749,74.4503,0.0,/home/gia/AriadnaVR/thesis/storage/textoir_training/open_intent_detection/MSP_oos_0.75_1.0_bert_0/models/pytorch_model.bin,ok
+MSP,oos,0.75,1,80.18,85.4753,85.5912,72.5019,0.0,/home/gia/AriadnaVR/thesis/storage/textoir_training/open_intent_detection/MSP_oos_0.75_1.0_bert_1/models/pytorch_model.bin,ok
+MSP,banking,0.75,0,79.19,85.0209,85.4526,59.9854,0.0,/home/gia/AriadnaVR/thesis/storage/textoir_training/open_intent_detection/MSP_banking_0.75_1.0_bert_0/models/pytorch_model.bin,ok
+MSP,banking,0.75,1,78.38,84.7009,85.2156,54.849,0.0,/home/gia/AriadnaVR/thesis/storage/textoir_training/open_intent_detection/MSP_banking_0.75_1.0_bert_1/models/pytorch_model.bin,ok
+OpenMax,oos,0.75,0,0.0,0.0,0.0,0.0,0.0,,failed:1
+OpenMax,oos,0.75,1,0.0,0.0,0.0,0.0,0.0,,failed:1
+OpenMax,banking,0.75,0,0.0,0.0,0.0,0.0,0.0,,failed:1
+OpenMax,banking,0.75,1,0.0,0.0,0.0,0.0,0.0,,failed:1
+DOC,oos,0.75,0,0.0,0.0,0.0,0.0,0.0,,failed:1
+DOC,oos,0.75,1,0.0,0.0,0.0,0.0,0.0,,failed:1
+DOC,banking,0.75,0,0.0,0.0,0.0,0.0,0.0,,failed:1
+DOC,banking,0.75,1,0.0,0.0,0.0,0.0,0.0,,failed:1
