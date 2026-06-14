@@ -42,7 +42,7 @@ def analyze_midlm_textoir(
     """
 
     midlm_input = original_query.strip() if original_query else completed_query.strip()
-    textoir_input = f"{completed_query.strip()}\n\n[Summary]\n{summary.strip()}"
+    textoir_input = midlm_input
 
     # 1) MIDLM multi-intent selection (HTTP via env-configurable endpoint)
     selected_intents: List[str] = []
