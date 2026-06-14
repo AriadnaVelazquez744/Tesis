@@ -1,0 +1,27 @@
+# Training-only dependencies
+# ==========================
+# These packages are needed ONLY for running training scripts,
+# NOT for the engine (Docker container serving the Streamlit UI).
+#
+# Almost all training dependencies overlap with the engine dependencies
+# defined in pyproject.toml (torch, transformers, peft, unsloth,
+# scikit-learn, accelerate, bitsandbytes, datasets, etc.).
+#
+# The packages listed below are the few that are training-specific
+# and can be omitted from the production container.
+#
+# Engine base dependencies (already in pyproject.toml):
+#   accelerate, bitsandbytes, datasets, huggingface-hub, keybert,
+#   lingo-ai, matplotlib, numpy, pandas, peft, penman, requests,
+#   scikit-learn, sentence-transformers, spacy, streamlit, torch,
+#   transformers, trl, unsloth
+
+# Additional training-only packages:
+#   (none required beyond pyproject.toml for the current training scripts)
+#
+# Notes:
+# - IPython is imported in dataset_wrapper.py for debugging
+#   (not critical, can be removed from production)
+# - tqdm is imported in dataset_wrapper.py for progress display
+#   (usually installed as transitive dependency)
+# - uv, ruff, ipykernel are development tools, not runtime
