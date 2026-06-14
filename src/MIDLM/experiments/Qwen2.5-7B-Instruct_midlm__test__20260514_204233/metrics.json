@@ -1,9 +1,0 @@
-{
-  "checkpoint_dir": "trained_models/Qwen2.5-7B-Instruct_midlm",
-  "split": "test",
-  "num_examples": 2000,
-  "exact_match_accuracy": 0.3655,
-  "k_accuracy": 0.9575,
-  "micro_f1": 0.7298266007943427,
-  "macro_f1": 0.7204864288734736
-}

@@ -216,10 +216,10 @@ base_implementations/Vagueness_Judge/Tell_Me_More-master/
 base_implementations/TEXTOIR/
 
 # base models
-src/base_models/Mistral-7B-Instruct-v0.3/
-src/base_models/Qwen2.5-7B-Instruct/
-src/base_models/Qwen2.5-3B-Instruct/
-src/base_models/Phi-3-mini-4k-instruct/
+training/base_models/Mistral-7B-Instruct-v0.3/
+training/base_models/Qwen2.5-7B-Instruct/
+training/base_models/Qwen2.5-3B-Instruct/
+training/base_models/Phi-3-mini-4k-instruct/
 
 # docker 
 tesis_local.tar
@@ -227,9 +227,19 @@ tesis_local.tar
 .cursor/
 .vscode/
 
-# training models
-src/Vagueness_Judge/jdv_adapters/
-src/MIDLM/midlm_adapters/
+# training models / large data files (regenerable, too large for repo)
+src/Vagueness_Judge/data/
+training/midlm/data/
+experiments/cao/data/
+
+# generated experiment outputs
+experiments/vagueness_judge/outputs/
+experiments/midlm/runs/
+experiments/midlm/logs/
+
+# virtual envs created by server scripts
+.venv-server/
 
 storage/
 logs/
+adapters/
