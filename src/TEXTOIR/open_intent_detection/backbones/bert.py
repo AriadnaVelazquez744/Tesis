@@ -14,6 +14,7 @@ from .utils import ConvexSampler
 activation_map = {'relu': nn.ReLU(), 'tanh': nn.Tanh()}
 
 class BERT_DOC(BertPreTrainedModel):
+    all_tied_weights_keys = {}
     def __init__(self, config, args):
         super(BERT_DOC, self).__init__(config)
         self.num_labels = args.num_labels
@@ -50,6 +51,7 @@ class BERT_DOC(BertPreTrainedModel):
                 return pooled_output, logits
 
 class BERT(BertPreTrainedModel):
+    all_tied_weights_keys = {}
     def __init__(self, config, args):
         super(BERT, self).__init__(config)
         self.num_labels = args.num_labels

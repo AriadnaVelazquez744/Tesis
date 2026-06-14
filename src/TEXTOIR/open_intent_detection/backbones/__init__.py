@@ -1,5 +1,8 @@
 from .bert import BERT, BERT_Norm, BERT_K_1_way, BERT_SEG, BERT_Disaware, BERT_DOC, BERT_MDF, BERT_MDF_Pretrain, BERT_KNNCL
-from .llama import LLAMA_lora_Disaware
+try:
+    from .llama import LLAMA_lora_Disaware
+except ImportError:
+    LLAMA_lora_Disaware = None
 
 backbones_map = {
                     'bert': BERT, 
