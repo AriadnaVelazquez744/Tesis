@@ -1,0 +1,9 @@
+{
+  "checkpoint_dir": "trained_models/Phi-3-mini-4k-instruct_midlm",
+  "split": "test",
+  "num_examples": 2000,
+  "exact_match_accuracy": 0.118,
+  "k_accuracy": 0.9445,
+  "micro_f1": 0.5423170140571982,
+  "macro_f1": 0.5307113490521976
+}

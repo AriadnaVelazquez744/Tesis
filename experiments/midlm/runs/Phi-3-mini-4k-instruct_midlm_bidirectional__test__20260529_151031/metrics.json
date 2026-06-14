@@ -1,0 +1,10 @@
+{
+  "checkpoint_dir": "/home/gia/AriadnaVR/thesis/midlm_training/trained_models_bidirectional/Phi-3-mini-4k-instruct_midlm_bidirectional",
+  "split": "test",
+  "bidirectional": true,
+  "num_examples": 2000,
+  "exact_match_accuracy": 0.129,
+  "k_accuracy": 0.9165,
+  "micro_f1": 0.5207949587978672,
+  "macro_f1": 0.510771275742726
+}

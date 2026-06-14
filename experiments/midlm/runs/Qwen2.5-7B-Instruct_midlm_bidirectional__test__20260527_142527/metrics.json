@@ -1,0 +1,10 @@
+{
+  "checkpoint_dir": "trained_models_bidirectional/Qwen2.5-7B-Instruct_midlm_bidirectional",
+  "split": "test",
+  "bidirectional": true,
+  "num_examples": 50,
+  "exact_match_accuracy": 0.0,
+  "k_accuracy": 0.8,
+  "micro_f1": 0.0234375,
+  "macro_f1": 0.001379310344827586
+}

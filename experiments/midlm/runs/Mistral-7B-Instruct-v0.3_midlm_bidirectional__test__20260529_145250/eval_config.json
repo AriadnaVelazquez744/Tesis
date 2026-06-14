@@ -1,0 +1,16 @@
+{
+  "checkpoint_dir": "/home/gia/AriadnaVR/thesis/midlm_training/trained_models_bidirectional/Mistral-7B-Instruct-v0.3_midlm_bidirectional",
+  "data_json": "/home/gia/AriadnaVR/thesis/midlm_training/data/WeaveClinc150_rewritten.json",
+  "split": "test",
+  "max_k": 3,
+  "max_seq_length": 512,
+  "batch_size": 8,
+  "load_in_4bit": true,
+  "bf16": true,
+  "fp16": false,
+  "limit": null,
+  "experiments_dir": "/home/gia/AriadnaVR/thesis/midlm_training/experiments",
+  "save_predictions": false,
+  "resume": false,
+  "eval_ckpt_steps": 100
+}
