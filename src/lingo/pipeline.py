@@ -44,17 +44,17 @@ def _save_cao_to_storage(cao: dict, completed_query: str, config: dict) -> None:
             json.dump(cao, f, indent=2, ensure_ascii=False)
         print(f"[STORAGE] CAO saved to: {filepath}")
 
-        # Also save to tests/comparissons/data/CAO_results/ with metadata
+        # Also save to experiments/cao/data/CAO_results/ with metadata
         _save_cao_with_metadata(cao, completed_query, config, timestamp)
     except Exception as e:
         print(f"[STORAGE] Error saving CAO: {e}")
 
 
 def _save_cao_with_metadata(cao: dict, completed_query: str, config: dict, timestamp: str) -> None:
-    """Save CAO wrapped with query metadata to tests/comparissons/data/CAO_results/."""
+    """Save CAO wrapped with query metadata to experiments/cao/data/CAO_results/."""
     try:
         results_dir = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "../../tests/comparissons/data/CAO_results")
+            os.path.join(os.path.dirname(__file__), "../../experiments/cao/data/CAO_results")
         )
         os.makedirs(results_dir, exist_ok=True)
 
