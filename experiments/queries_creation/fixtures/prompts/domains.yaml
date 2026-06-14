@@ -1,0 +1,203 @@
+# Domain Definitions for Analysis Phase Evaluation Dataset
+# Each domain represents a vertical application area with associated CLINC150 intents.
+# Domains are used to ensure coverage diversity in the evaluation dataset.
+
+domains:
+
+  - id: banking_finance
+    abbrev: BANK
+    label: "Banking & Finance"
+    description: "Personal banking, credit, investments, taxes, employment benefits, and financial management."
+    associated_intents:
+      - account_blocked
+      - application_status
+      - apr
+      - balance
+      - bill_balance
+      - bill_due
+      - card_declined
+      - credit_limit
+      - credit_limit_change
+      - credit_score
+      - damaged_card
+      - direct_deposit
+      - exchange_rate
+      - expiration_date
+      - freeze_account
+      - improve_credit_score
+      - income
+      - interest_rate
+      - international_fees
+      - min_payment
+      - new_card
+      - order_checks
+      - pay_bill
+      - payday
+      - pin_change
+      - pto_balance
+      - pto_request
+      - pto_request_status
+      - pto_used
+      - redeem_rewards
+      - report_fraud
+      - report_lost_card
+      - replacement_card_duration
+      - rewards_balance
+      - rollover_401k
+      - routing
+      - spending_history
+      - taxes
+      - transactions
+      - transfer
+      - w2
+
+  - id: travel
+    abbrev: TRAV
+    label: "Travel & Transportation"
+    description: "Flight and hotel bookings, car rental, travel alerts, visas, transportation, and reservations."
+    associated_intents:
+      - accept_reservations
+      - book_flight
+      - book_hotel
+      - cancel_reservation
+      - car_rental
+      - carry_on
+      - confirm_reservation
+      - flight_status
+      - international_visa
+      - lost_luggage
+      - plug_type
+      - traffic
+      - travel_alert
+      - travel_notification
+      - travel_suggestion
+      - uber
+
+  - id: home_auto
+    abbrev: HOME
+    label: "Home & Automotive"
+    description: "Home automation, vehicle maintenance and fueling, smart devices, and roadside assistance."
+    associated_intents:
+      - alarm
+      - gas
+      - gas_type
+      - jump_start
+      - last_maintenance
+      - mpg
+      - oil_change_how
+      - oil_change_when
+      - schedule_maintenance
+      - smart_home
+      - tire_change
+      - tire_pressure
+
+  - id: food_dining
+    abbrev: FOOD
+    label: "Food & Dining"
+    description: "Restaurants, recipes, cooking, nutrition, meal planning, groceries, and food ordering."
+    associated_intents:
+      - calories
+      - cook_time
+      - food_last
+      - ingredient_substitution
+      - ingredients_list
+      - meal_suggestion
+      - nutrition_info
+      - order
+      - order_status
+      - recipe
+      - restaurant_reservation
+      - restaurant_reviews
+      - restaurant_suggestion
+      - shopping_list
+      - shopping_list_update
+
+  - id: healthcare
+    abbrev: HLTH
+    label: "Healthcare & Wellness"
+    description: "Health insurance, vaccinations, nutrition, and medical information."
+    associated_intents:
+      - insurance
+      - insurance_change
+      - vaccines
+
+  - id: communication
+    abbrev: COMM
+    label: "Communication & Social"
+    description: "Texting, calling, sharing, greetings, device personalization, and account settings."
+    associated_intents:
+      - change_accent
+      - change_ai_name
+      - change_language
+      - change_speed
+      - change_user_name
+      - change_volume
+      - greeting
+      - goodbye
+      - make_call
+      - reset_settings
+      - share_location
+      - sync_device
+      - text
+      - thank_you
+      - user_name
+      - whisper_mode
+
+  - id: info_utilities
+    abbrev: UTIL
+    label: "Information & Utilities"
+    description: "Calendar, reminders, definitions, directions, measurements, time, weather, calculators, device utilities, and general knowledge."
+    associated_intents:
+      - calculator
+      - calendar
+      - calendar_update
+      - current_location
+      - date
+      - definition
+      - directions
+      - distance
+      - find_phone
+      - how_busy
+      - measurement_conversion
+      - meeting_schedule
+      - next_holiday
+      - reminder
+      - reminder_update
+      - schedule_meeting
+      - spelling
+      - time
+      - timer
+      - timezone
+      - todo_list
+      - todo_list_update
+      - translate
+      - weather
+
+  - id: entertainment
+    abbrev: ENTR
+    label: "Entertainment & General Chat"
+    description: "Music, jokes, games, trivia, conversation about the AI itself, and casual social chat."
+    associated_intents:
+      - are_you_a_bot
+      - cancel
+      - do_you_have_pets
+      - flip_coin
+      - fun_fact
+      - how_old_are_you
+      - maybe
+      - meaning_of_life
+      - next_song
+      - "no"
+      - play_music
+      - repeat
+      - roll_dice
+      - tell_joke
+      - update_playlist
+      - what_are_your_hobbies
+      - what_can_i_ask_you
+      - what_is_your_name
+      - what_song
+      - where_are_you_from
+      - who_do_you_work_for
+      - who_made_you
+      - "yes"
