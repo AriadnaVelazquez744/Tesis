@@ -1,0 +1,18 @@
+{
+  "vagueness_judgment_accuracy": 0.6852,
+  "missing_details_recover_rate": {
+    "1": 0.0278,
+    "2": 0.1889,
+    "3": 0.3716,
+    "total_recover_rate": 0.2363
+  },
+  "summary_intention_coverage_rate": 0.7551,
+  "options_presenting_rate": 0.9079,
+  "options_reasonable_rate": 0.658,
+  "average_provided_options": 2.8092,
+  "average_inquired_missing_details_per_round": 0.9342,
+  "average_conversation_rounds": 2.537,
+  "average_inquired_missing_details": 0.9868,
+  "num_examples": 108,
+  "model": "Qwen2.5-3B-Instruct"
+}
