@@ -80,13 +80,7 @@ COPY src ./src
 RUN chmod +x ./start_services.sh \
   && mkdir -p \
     ./logs \
-    ./storage \
-    ./src/base_models \
-    ./src/Vagueness_Judge/jdv_adapters \
-    ./src/MIDLM/data \
-    ./src/MIDLM/midlm_adapters \
-    ./src/MIDLM/experiments \
-    ./src/TEXTOIR
+    ./storage
 
 EXPOSE 8501
 CMD ["/bin/bash", "./start_services.sh"]

@@ -9,7 +9,7 @@ services:
       - "8501:8501"
 
     environment:
-      # Requerido por src/base_models/douwnload_models.py
+      # Token de HuggingFace para modelos con acceso restringido.
       HF_TOKEN: ${HF_TOKEN:-}
 
       # Requerido para inferencia/chatbot si usas un servidor local (ej. LLMStudio).
@@ -40,16 +40,18 @@ services:
       - "host.docker.internal:host-gateway"
 
     volumes:
-      # Código y scripts ya van en la imagen. Persistimos los datos que cambian:
-      - ./src/base_models:/app/src/base_models
+      # Código runtime montado para desarrollo (edición en caliente).
       - ./src/Vagueness_Judge/runtime:/app/src/Vagueness_Judge/runtime
-      - ./src/Vagueness_Judge/jdv_adapters:/app/src/Vagueness_Judge/jdv_adapters
-      - ./src/MIDLM/data:/app/src/MIDLM/data
-      - ./src/MIDLM/midlm_adapters:/app/src/MIDLM/midlm_adapters
-      - ./src/MIDLM/experiments:/app/src/MIDLM/experiments
       - ./src/midlm_textoir_module:/app/src/midlm_textoir_module
       - ./src/TEXTOIR:/app/src/TEXTOIR
       - ./src/Semantic_Grounding:/app/src/Semantic_Grounding
+
+      # Adaptadores entrenados (montados desde training/ para inferencia).
+      - ./training/midlm/adapters:/app/training/midlm/adapters
+      - ./training/vagueness_judge/adapters:/app/training/vagueness_judge/adapters
+
+      # Resultados y datos persistentes.
+      - ./experiments/cao/data/CAO_results:/app/experiments/cao/data/CAO_results
       - ./logs:/app/logs
       - ./storage:/app/storage
 
