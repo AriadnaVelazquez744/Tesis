@@ -1,0 +1,1366 @@
+{
+  "meta": {
+    "description": "Stratified sample — fully deduplicated and diversified",
+    "total": 150,
+    "ind_count": 100,
+    "oos_count": 50,
+    "random_seed": 42,
+    "created": "2026-06-12",
+    "source_file": "experiments/queries_creation/fixtures/expanded/expanded_queries.jsonl",
+    "previous_version": "evaluation_sample_v1.json",
+    "deduplicated": true,
+    "removed_near_duplicates": 32
+  },
+  "records": [
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "Checking my account balance always makes me feel nervous.",
+      "k": 1,
+      "id": "PSYCH-BANK-104"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "I experience anxiety when I'm by myself at home. Could you assist me in setting up smart devices to enhance my sense of security?",
+      "k": 1,
+      "id": "PSYCH-HOME-121"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "I get nervous whenever I have to dial a number, could you assist me?",
+      "k": 1,
+      "id": "PSYCH-COMM-152"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "I feel anxious when I think about public speaking. Can you tell me a joke and some tips to manage my anxiety?",
+      "k": 2,
+      "id": "PSYCH-ENTR-177"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "I'm worried about my flight next week. Could you assist me in booking a hotel close to the airport?",
+      "k": 2,
+      "id": "PSYCH-TRAV-191"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "I feel anxious every time I check my account balance and also want to know if there's any fraud reported.",
+      "k": 2,
+      "id": "PSYCH-BANK-106"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Can you explain the impact of stress on my mental health and provide nutritional advice?",
+      "k": 2,
+      "id": "PSYCH-HLTH-223"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "I get stressed out dining at that place. Could you recommend a more soothing restaurant?",
+      "k": 2,
+      "id": "PSYCH-FOOD-213"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "I'm feeling anxious about my upcoming flight, can you help me book a hotel near the airport and also check if there are any travel alerts for that area?",
+      "k": 3,
+      "id": "PSYCH-TRAV-196"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Could you provide examples of typical cognitive biases that influence decisions?",
+      "k": 3,
+      "id": "PSYCH-UTIL-234"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "I feel anxious when I'm home alone, can you help me set up some smart devices and maybe play some music to make it better?",
+      "k": 3,
+      "id": "PSYCH-HOME-206"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "Can you guide me on modifying the language settings of my device?",
+      "k": 1,
+      "id": "INFO-COMM-305"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Could you tell me which city is the capital of France?",
+      "k": 1,
+      "id": "INFO-UTIL-312"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "What is the recommended interval for changing my car's oil?",
+      "k": 1,
+      "id": "INFO-HOME-271"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Can you tell me which vaccinations are advised for a newborn?",
+      "k": 1,
+      "id": "INFO-HLTH-291"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "What is the credit limit on my account and when does it reset?",
+      "k": 2,
+      "id": "INFO-BANK-257"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "Could you tell me about the top travel spots for this summer season?",
+      "k": 2,
+      "id": "INFO-TRAV-341"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "how do i change my device's language settings and also check if there are any updates available?",
+      "k": 2,
+      "id": "INFO-COMM-306"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "Could you tell me what my present credit score is and provide tips on enhancing it?",
+      "k": 2,
+      "id": "INFO-BANK-332"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "Which vacation spots are highly sought after during the summer months?",
+      "k": 2,
+      "id": "INFO-TRAV-862"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "What is my current credit score and how can I improve it? Also, what are the international fees associated with using my card abroad?",
+      "k": 3,
+      "id": "INFO-BANK-336"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Could you provide me with the meaning of artificial intelligence?",
+      "k": 3,
+      "id": "INFO-UTIL-382"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "What is the best time to change my car's oil and how often should I do it?",
+      "k": 3,
+      "id": "INFO-HOME-356"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "what is the definition of artificial intelligence and how widely is it being used?",
+      "k": 3,
+      "id": "INFO-UTIL-927"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "What would be the total cost if I ordered three pizzas, each priced at $12?",
+      "k": 1,
+      "id": "MATH-FOOD-434"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Can you calculate 25 percent of the daily calorie intake if my recommended intake is 2000 calories?",
+      "k": 1,
+      "id": "MATH-HLTH-443"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "I have a discount of 15% on my flight ticket, which originally costs $250. What will be the price after applying the discount?",
+      "k": 1,
+      "id": "MATH-TRAV-413"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "If I stay at a hotel for three nights and each night costs $150, what would be the total cost?",
+      "k": 2,
+      "id": "MATH-TRAV-491"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Can you calculate how much 25 percent of 80 is and also tell me the weather today?",
+      "k": 2,
+      "id": "MATH-UTIL-466"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "What will be the balance of my savings account if I make a $500 transfer?",
+      "k": 2,
+      "id": "MATH-BANK-483"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "What is the interest rate if I have a balance of $500 and pay $25 in interest, and how can I improve my credit score?",
+      "k": 2,
+      "id": "MATH-BANK-406"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "Can you calculate how much gas I need if my car gets 30 miles per gallon and I'm driving 150 miles, and also tell me the cost if gas is $3.50 per gallon?",
+      "k": 3,
+      "id": "MATH-HOME-507"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "If I transfer $500 to my savings account, what will be the new balance and can you also tell me if this amount qualifies for a higher interest rate?",
+      "k": 3,
+      "id": "MATH-BANK-487"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Could you determine the value that represents 15% of 200?",
+      "k": 3,
+      "id": "MATH-UTIL-532"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "How many calories should I consume daily if my weight is 150 pounds and I want to lose weight, and can you also suggest some healthy meal options?",
+      "k": 3,
+      "id": "MATH-HLTH-527"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "Please set an alarm for the morning of tomorrow and also remind me to check my tire pressure.",
+      "k": 1,
+      "id": "MIX-HOME-575"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "I need to arrange a flight and also locate accommodation for my trip to Paris.",
+      "k": 1,
+      "id": "MIX-TRAV-564"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Could you provide details on the nutritional benefits of spinach and whether it impacts my health insurance deductible?",
+      "k": 1,
+      "id": "MIX-HLTH-591"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "Could you provide my credit score and explain if it impacts getting a new card?",
+      "k": 1,
+      "id": "MIX-BANK-555"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "Please set up two reminders: one for calling my mother at 5 PM and another for her birthday.",
+      "k": 1,
+      "id": "MIX-COMM-602"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "Could you please set an alarm for me and also let me know when I should change my car's oil?",
+      "k": 2,
+      "id": "MIX-HOME-651"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "Can you tell me my credit score and if it will affect my ability to get a new card, also can you check the balance on my account?",
+      "k": 2,
+      "id": "MIX-BANK-557"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "Could you recommend a nutritious meal and also provide its nutritional profile?",
+      "k": 2,
+      "id": "MIX-FOOD-663"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Could you provide information on the potential side effects of this vaccine and also set a reminder for my next dose?",
+      "k": 2,
+      "id": "MIX-HLTH-674"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "Can you remind me to call my mom at 5 PM and also set a reminder for her birthday? Also, can you tell me what the weather will be like on that day?",
+      "k": 2,
+      "id": "MIX-COMM-607"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "Can you book a flight and also find me a hotel for my trip to Paris? Additionally, could you set up travel alerts for any important updates?",
+      "k": 2,
+      "id": "MIX-TRAV-889"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "Can you tell me my credit score, how much I need to pay for my minimum bill this month, and also when is the best time to make a transfer?",
+      "k": 3,
+      "id": "MIX-BANK-636"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "Can you book a hotel, let me know if there are any travel alerts for my destination, and also provide some restaurant suggestions?",
+      "k": 3,
+      "id": "MIX-TRAV-647"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "Can you suggest a healthy meal, tell me its nutritional value, and also give me an ingredients list?",
+      "k": 3,
+      "id": "MIX-FOOD-666"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Can you tell me about the side effects of this vaccine and also remind me when I need to get my next one? Additionally, could you provide some information on how to alleviate any discomfort after getting vaccinated?",
+      "k": 3,
+      "id": "MIX-HLTH-677"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Will getting vaccinated stop me from falling ill?",
+      "k": 1,
+      "id": "NLG-HLTH-744"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "After arriving home, I need to remember to give my mother a call.",
+      "k": 1,
+      "id": "NLG-COMM-754"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "In the event of a flight delay, can I be accommodated in a hotel?",
+      "k": 1,
+      "id": "NLG-TRAV-908"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "If you were to become a musician, which musical genre would you specialize in?",
+      "k": 1,
+      "id": "NLG-ENTR-895"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "Could you configure my smart home system to turn off every light at 10 PM?",
+      "k": 1,
+      "id": "NLG-HOME-721"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "Can I get my pizza delivered before the meeting at 3 PM?",
+      "k": 1,
+      "id": "NLG-FOOD-733"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "Will an increase in my credit score impact the interest rate on loans?",
+      "k": 2,
+      "id": "NLG-BANK-785"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Can you set a reminder for me to leave work at 5 PM and also translate 'good evening' into Spanish?",
+      "k": 2,
+      "id": "NLG-UTIL-911"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "If my flight is delayed, can I get a hotel room and what are the options for transportation to that hotel?",
+      "k": 2,
+      "id": "NLG-TRAV-716"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Can you explain the weather conditions following rainfall?",
+      "k": 3,
+      "id": "NLG-UTIL-831"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "If I book a flight to Paris, will my hotel reservation be confirmed and can you also suggest some local restaurants?",
+      "k": 3,
+      "id": "NLG-TRAV-797"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "If I increase the thermostat, will it cause my heating bill to go up? And can you set a reminder for me to check the thermostat every week?",
+      "k": 3,
+      "id": "NLG-HOME-906"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "If my credit score improves, will it affect my interest rate on loans and also impact my eligibility for new cards?",
+      "k": 3,
+      "id": "NLG-BANK-787"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "What are some interesting psychological experiments that have been conducted?",
+      "k": 1,
+      "id": "PSYCH-UTIL-168"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "When I need to call someone, it makes me feel really nervous. Can you give me some advice?",
+      "k": 1,
+      "id": "PSYCH-COMM-934"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "I'm feeling anxious about my upcoming flight, can you suggest some relaxation techniques?",
+      "k": 1,
+      "id": "PSYCH-TRAV-198"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "I'm feeling anxious about public speaking. Can you help me understand the psychology behind this anxiety?",
+      "k": 1,
+      "id": "PSYCH-ENTR-178"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "I'm curious about the psychological effects of dining in different environments. Can you provide some insights?",
+      "k": 2,
+      "id": "PSYCH-FOOD-218"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "I'm curious about the history of smart home technology, can you tell me more?",
+      "k": 2,
+      "id": "PSYCH-HOME-208"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "What was the impact of the Beatles on modern music?",
+      "k": 1,
+      "id": "INFO-ENTR-328"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "What's the best way to pack for a trip to Paris?",
+      "k": 1,
+      "id": "INFO-TRAV-268"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "What are the health benefits of eating dinner at different times?",
+      "k": 1,
+      "id": "INFO-FOOD-288"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Can you tell me about the history of vaccines?",
+      "k": 1,
+      "id": "INFO-HLTH-298"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "what is the meaning of life, the universe, and everything?",
+      "k": 3,
+      "id": "INFO-UTIL-388"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "How can I modify the sound my phone makes when it rings?",
+      "k": 3,
+      "id": "INFO-COMM-394"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "How many seconds are there in a day?",
+      "k": 1,
+      "id": "MATH-COMM-541"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "What is the best way to incorporate more vegetables into my diet if I don't like them?",
+      "k": 2,
+      "id": "MATH-HLTH-528"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "Can you tell me what the best car brand is for long drives?",
+      "k": 2,
+      "id": "MATH-HOME-508"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Can you explain the impact of quantum computing on healthcare in the next decade?",
+      "k": 1,
+      "id": "MIX-HLTH-598"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "What is the best way to train for a marathon while maintaining a busy work schedule?",
+      "k": 1,
+      "id": "MIX-HOME-578"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "What's the best way to improve my credit score and get a new card?",
+      "k": 1,
+      "id": "MIX-BANK-558"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Can you explain the concept of herd immunity and how it relates to vaccination?",
+      "k": 2,
+      "id": "MIX-HLTH-678"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "What are some tips for improving my public speaking skills?",
+      "k": 2,
+      "id": "MIX-TRAV-648"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "Can you tell me how to improve my credit score and also what the best investment strategy is for someone in their thirties?",
+      "k": 2,
+      "id": "MIX-BANK-638"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "Could you assist me with adjusting my device's accent settings and also set a reminder to text my friend about the meeting?",
+      "k": 3,
+      "id": "MIX-COMM-692"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "What would you say if I told you that I can time travel?",
+      "k": 1,
+      "id": "NLG-COMM-758"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "What is the origin of pizza and how did it become so popular?",
+      "k": 1,
+      "id": "NLG-FOOD-738"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "What would happen if pizza could fly?",
+      "k": 2,
+      "id": "NLG-FOOD-818"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "What would happen if I replaced my thermostat with a smart one?",
+      "k": 2,
+      "id": "NLG-HOME-808"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "I need to remember to send an email to my boss after I leave the office today.",
+      "k": 3,
+      "id": "NLG-COMM-841"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "I need to remember to contact my mother once I'm done with work today.",
+      "k": 3,
+      "id": "NLG-COMM-842"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "I feel anxious when I need to make a phone call, can you help me and also suggest some relaxation techniques?",
+      "k": 2,
+      "id": "PSYCH-COMM-157"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "How does my mental health get affected by stress?",
+      "k": 2,
+      "id": "PSYCH-HLTH-918"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "What are some healthy meal options for dinner and can you also give me the nutrition information?",
+      "k": 2,
+      "id": "INFO-FOOD-287"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "Can you tell me the credit limit on my account?",
+      "k": 1,
+      "id": "INFO-BANK-253"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "If I order two pizzas and each pizza costs $15, how much will the total be? Also, can you suggest a good side dish?",
+      "k": 3,
+      "id": "MATH-FOOD-516"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "What would be the price of a ticket with a $250 base cost after applying a 15% discount?",
+      "k": 1,
+      "id": "MATH-TRAV-412"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "If I decide to buy two pizzas, each costing $15, what would be the total amount?",
+      "k": 2,
+      "id": "MATH-FOOD-877"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Can you tell me the weather forecast for tomorrow and also set a reminder for my meeting?",
+      "k": 1,
+      "id": "MIX-UTIL-620"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "Could you arrange for accommodation and also inform me if there are any travel advisories for my destination?",
+      "k": 2,
+      "id": "MIX-TRAV-644"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "I need a healthy meal recommendation along with its nutritional information.",
+      "k": 2,
+      "id": "MIX-FOOD-669"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "Please set up an alert to call my mother once I arrive home.",
+      "k": 1,
+      "id": "NLG-COMM-751"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "If I arrange a flight to Paris, will the booking of my hotel be confirmed?",
+      "k": 2,
+      "id": "NLG-TRAV-792"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "If I get vaccinated, will it prevent me from getting sick?",
+      "k": 1,
+      "id": "NLG-HLTH-749"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "after it rains, what is the weather like?",
+      "k": 3,
+      "id": "NLG-UTIL-840"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Do you think it's ethical to use AI for psychological assessment?",
+      "k": 1,
+      "id": "PSYCH-HLTH-148"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "What are the best ways to cook a perfect steak?",
+      "k": 2,
+      "id": "INFO-FOOD-368"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "How many minutes are there in three hours and forty-five minutes combined?",
+      "k": 3,
+      "id": "MATH-COMM-546"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "Can you explain the concept of time dilation in special relativity?",
+      "k": 1,
+      "id": "MATH-TRAV-418"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "What's the meaning of life and how does it relate to quantum mechanics?",
+      "k": 1,
+      "id": "NLG-UTIL-768"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "I would like to hear an interesting fact related to music.",
+      "k": 1,
+      "id": "INFO-ENTR-322"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "Can you calculate 25% of my daily recommended calories if I need 2000 calories a day and also tell me the nutritional value of an apple?",
+      "k": 2,
+      "id": "MATH-HLTH-446"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "How does stress affect my mental health and what can I do to manage it?",
+      "k": 3,
+      "id": "PSYCH-HLTH-226"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "Could you figure out what 25% of $400 would be?",
+      "k": 1,
+      "id": "MATH-COMM-452"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "I need advice on a nutritious meal and its calorie count.",
+      "k": 1,
+      "id": "MIX-FOOD-582"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "What is the history behind the invention of pizza?",
+      "k": 1,
+      "id": "MATH-FOOD-438"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "banking_finance",
+      "vague": false,
+      "query": "I'm worried about my credit score, could you explain it to me?",
+      "k": 2,
+      "id": "PSYCH-BANK-182"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "I experience anxiety when it comes to flying. Could you assist me in booking a flight with excellent customer service?",
+      "k": 1,
+      "id": "PSYCH-TRAV-114"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "What are the recommended vaccinations for a newborn baby and when should they be administered?",
+      "k": 2,
+      "id": "INFO-HLTH-297"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "what is the capital of france and how do i get there from new york?",
+      "k": 2,
+      "id": "INFO-UTIL-316"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "When is it recommended to replace the oil in my vehicle?",
+      "k": 2,
+      "id": "INFO-HOME-352"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "I want to know how to set up a custom ringtone on my mobile device.",
+      "k": 3,
+      "id": "INFO-COMM-392"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "What is the best way to train my dog to sit?",
+      "k": 1,
+      "id": "INFO-HOME-278"
+    },
+    {
+      "oos": false,
+      "topic": "information_search",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "What vaccinations should be given to a newborn baby?",
+      "k": 1,
+      "id": "INFO-HLTH-299"
+    },
+    {
+      "oos": true,
+      "topic": "information_search",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "How do I set my mobile device to play a custom sound when receiving calls?",
+      "k": 3,
+      "id": "INFO-COMM-396"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "Could you tell me the total minutes if I have a meeting for 3 hours and 45 minutes?",
+      "k": 1,
+      "id": "MATH-COMM-542"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "If my daily calorie requirement is 2000, can you calculate what 25% of that would be?",
+      "k": 1,
+      "id": "MATH-HLTH-445"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Can you tell me the plot summary of 'Pride and Prejudice' by Jane Austen?",
+      "k": 1,
+      "id": "MATH-UTIL-468"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "225 minutes is the conversion of how many hours and minutes are in 3 hours and 45 minutes?",
+      "k": 1,
+      "id": "MATH-COMM-550"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "healthcare",
+      "vague": false,
+      "query": "If I need 2000 calories a day, what is 25% of my daily recommended calories?",
+      "k": 1,
+      "id": "MATH-HLTH-450"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "If each night costs $150, how much would it cost to book a hotel for 3 nights?",
+      "k": 2,
+      "id": "MATH-TRAV-500"
+    },
+    {
+      "oos": false,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "What is the result when you calculate 25 percent of 80?",
+      "k": 1,
+      "id": "MATH-ENTR-876"
+    },
+    {
+      "oos": true,
+      "topic": "mathematical_calculation",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "What is the significance of pi in pizza baking?",
+      "k": 1,
+      "id": "MATH-FOOD-518"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "Can you assist me in changing the color theme of my device and also remind me to send a message to my colleague about our upcoming conference call?",
+      "k": 3,
+      "id": "MIX-COMM-691"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Can you help me understand the meaning of life and also tell me if there are any good books about existentialism?",
+      "k": 1,
+      "id": "MIX-UTIL-618"
+    },
+    {
+      "oos": false,
+      "topic": "mixed",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "Can you suggest a healthy meal and also tell me how many calories it has? I would like to know the nutritional information as well.",
+      "k": 2,
+      "id": "MIX-FOOD-587"
+    },
+    {
+      "oos": true,
+      "topic": "mixed",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "Can you remind me to text my friend about the meeting and also help me change my device's accent?",
+      "k": 3,
+      "id": "MIX-COMM-700"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "If you were an artist, what medium would you use?",
+      "k": 1,
+      "id": "NLG-ENTR-778"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "Will raising the thermostat setting result in an increase of my heating costs?",
+      "k": 2,
+      "id": "NLG-HOME-801"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "If you were a musician, what genre would you play and could you suggest some songs in that genre?",
+      "k": 2,
+      "id": "NLG-ENTR-896"
+    },
+    {
+      "oos": false,
+      "topic": "natural_logic",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "If I order a pizza, will it be delivered before my meeting starts at 3 PM and can you set a reminder for me?",
+      "k": 3,
+      "id": "NLG-FOOD-816"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "communication",
+      "vague": false,
+      "query": "I need to remember to reach out to my sister after I wrap up this project.",
+      "k": 3,
+      "id": "NLG-COMM-843"
+    },
+    {
+      "oos": true,
+      "topic": "natural_logic",
+      "domain_cluster": "travel",
+      "vague": false,
+      "query": "If my flight is delayed, can you recommend a good book to read?",
+      "k": 1,
+      "id": "NLG-TRAV-718"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "Can you tell me a joke to lighten the mood since I feel anxious about public speaking?",
+      "k": 1,
+      "id": "PSYCH-ENTR-180"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "home_auto",
+      "vague": false,
+      "query": "I often feel anxious when I'm home alone. Can you suggest some books that might help me cope with my anxiety?",
+      "k": 1,
+      "id": "PSYCH-HOME-128"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "How do cognitive biases influence the way we perceive art?",
+      "k": 3,
+      "id": "PSYCH-UTIL-238"
+    },
+    {
+      "oos": true,
+      "topic": "human_psychology",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "I'm curious, do you think fancy restaurants contribute to anxiety in society?",
+      "k": 1,
+      "id": "PSYCH-FOOD-138"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "info_utilities",
+      "vague": false,
+      "query": "Can you provide the definition of cognitive dissonance?",
+      "k": 1,
+      "id": "PSYCH-UTIL-169"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "entertainment",
+      "vague": false,
+      "query": "I get nervous thinking about speaking in public. Could you make me laugh to ease my tension?",
+      "k": 1,
+      "id": "PSYCH-ENTR-171"
+    },
+    {
+      "oos": false,
+      "topic": "human_psychology",
+      "domain_cluster": "food_dining",
+      "vague": false,
+      "query": "I feel anxious when I eat at fancy restaurants, can you suggest a more relaxed place and also tell me about the ambiance?",
+      "k": 2,
+      "id": "PSYCH-FOOD-136"
+    }
+  ]
+}
