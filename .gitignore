@@ -222,10 +222,13 @@ tesis_local.tar
 # training models / large data files (regenerable, too large for repo)
 src/Vagueness_Judge/data/
 training/midlm/data/
+training/textoir/models/
 experiments/cao/data/CAO_results/
 experiments/cao/data/CAO_results_no_jdv/
 
 # generated experiment outputs
+experiments/vagueness_judge/outputs/
+experiments/midlm/runs/
 experiments/midlm/logs/
 
 # virtual envs created by server scripts
