@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
-Batch CAO generator — runs queries through the full pipeline (without vagueness)
-and saves CAOs to experiments/cao/data/CAO_results/.
+Batch CAO generator — runs queries through the full pipeline and saves CAOs
+to experiments/cao/data/CAO_results/.
 
 Usage:
-    uv run python experiments/cao/batch_cao.py [--queries N] [--limit M]
+    uv run python experiments/cao/batch_cao.py [--limit M] [--with-jdv]
+    uv run python experiments/cao/batch_cao.py --jdv-dir experiments/cao/data/jdv_results
 
+By default vagueness (JDV) is bypassed. Use --with-jdv for live JDV, or
+--jdv-dir to inject precomputed JDV JSONs from jdv_runner.py (Colab).
 Skips any query that requires human intervention (vagueness clarification).
-Does not modify any existing files.
 """
 
 from __future__ import annotations
@@ -31,6 +33,51 @@ _DEFAULT_DATA = (
     SCRIPT_DIR / "data" / "evaluation_sample_v1.json"
 )
 TEST_DATA_FILE = _DEFAULT_DATA
+_JDV_BY_RECORD_ID: Dict[str, Dict[str, Any]] = {}
+
+
+def _load_precomputed_jdv(jdv_dir: Path) -> Dict[str, Dict[str, Any]]:
+    from experiments.cao.jdv_runner import load_jdv_results
+
+    by_id, _ = load_jdv_results(jdv_dir)
+    print(f"[BATCH] Loaded {len(by_id)} precomputed JDV records from {jdv_dir}")
+    return by_id
+
+
+def _make_precomputed_vagueness(
+    user_text: str, state: Any
+) -> Dict[str, Any]:
+    """Return JDV resolution from precomputed jdv_results/ files."""
+    from src.Vagueness_Judge.runtime.pipeline import _reset_state
+
+    record_id = ""
+    if isinstance(state, dict):
+        record_id = str(state.get("_batch_record_id", "")).strip()
+
+    jdv = _JDV_BY_RECORD_ID.get(record_id, {})
+    if not jdv:
+        for entry in _JDV_BY_RECORD_ID.values():
+            if entry.get("query", "").strip() == user_text.strip():
+                jdv = entry
+                break
+
+    if jdv.get("status") == "needs_clarification":
+        question = jdv.get("question") or "Could you provide more details?"
+        return {
+            "status": "needs_user_input",
+            "assistant_message": question,
+            "raw_response": jdv.get("raw_response", ""),
+            "updated_state": state,
+        }
+
+    return {
+        "status": "resolved",
+        "completed_query": jdv.get("completed_query", user_text.strip()),
+        "summary": jdv.get("summary", ""),
+        "summary_thought": jdv.get("summary_thought", ""),
+        "raw_response": jdv.get("raw_response", ""),
+        "updated_state": _reset_state(state) if state else None,
+    }
 
 
 def _make_resolved_vagueness(
@@ -70,6 +117,7 @@ def _save_cao(
     record_id: str,
     status: str,
     index: int,
+    jdv: Dict[str, Any] | None = None,
 ) -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     from src.lingo.pipeline import _sanitize_filename
@@ -77,14 +125,22 @@ def _save_cao(
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"cao_{timestamp}_{index:04d}_{record_id}_{slug}.json"
     filepath = OUTPUT_DIR / filename
-    meta = {
+    meta: Dict[str, Any] = {
         "_batch_info": {
             "query": query,
             "record_id": record_id,
             "index": index,
             "timestamp": timestamp,
+            "pipeline_status": status,
         }
     }
+    if jdv:
+        meta["jdv"] = jdv
+        cao_meta = cao.setdefault("meta", {})
+        if isinstance(cao_meta, dict):
+            for key in ("completed_query", "summary", "summary_thought"):
+                if jdv.get(key):
+                    cao_meta[key] = jdv[key]
     output = {"meta": meta, "cao": cao}
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
@@ -139,7 +195,14 @@ def main() -> None:
                         help="Path to queries JSON file (overrides default)")
     parser.add_argument("--output-dir", type=str, default=None,
                         help="Output directory for CAOs (overrides default)")
+    parser.add_argument("--with-jdv", action="store_true",
+                        help="Run real Vagueness Judge instead of bypassing it")
+    parser.add_argument("--jdv-dir", type=str, default=None,
+                        help="Use precomputed JDV JSONs from this directory")
     args = parser.parse_args()
+
+    if args.with_jdv and args.jdv_dir:
+        parser.error("Use either --with-jdv or --jdv-dir, not both")
 
     global TEST_DATA_FILE, OUTPUT_DIR
     if args.data:
@@ -156,9 +219,24 @@ def main() -> None:
     skipped = 0
     errors = 0
 
+    with_jdv = args.with_jdv
+    jdv_dir = Path(args.jdv_dir) if args.jdv_dir else None
+    use_precomputed_jdv = jdv_dir is not None
+
+    if use_precomputed_jdv:
+        global _JDV_BY_RECORD_ID
+        _JDV_BY_RECORD_ID = _load_precomputed_jdv(jdv_dir)
+
+    if use_precomputed_jdv:
+        vagueness_mode = f"PRECOMPUTED ({jdv_dir})"
+    elif with_jdv:
+        vagueness_mode = "JDV ENABLED"
+    else:
+        vagueness_mode = "BYPASSED"
+
     print(f"\n[BATCH] Loading {total} queries from {TEST_DATA_FILE.name}")
     print(f"[BATCH] Output dir: {OUTPUT_DIR}")
-    print(f"[BATCH] Vagueness: BYPASSED (all queries treated as resolved)\n")
+    print(f"[BATCH] Vagueness: {vagueness_mode}\n")
 
     # Wait for services
     _wait_for_amr()
@@ -176,12 +254,21 @@ def main() -> None:
             print(f"[BATCH] TEXTOIR smoke test failed: {e}")
     print()
 
-    # Patch vagueness BEFORE importing pipeline (which imports handle_vagueness_turn)
-    _patch_vagueness()
+    if use_precomputed_jdv:
+        import src.Vagueness_Judge.runtime.pipeline as vp
+        import src.Vagueness_Judge.runtime as vr
+        vp.handle_vagueness_turn = _make_precomputed_vagueness
+        vr.handle_vagueness_turn = _make_precomputed_vagueness
+    elif not with_jdv:
+        # Patch vagueness BEFORE importing pipeline (which imports handle_vagueness_turn)
+        _patch_vagueness()
 
-    # Import pipeline after patching, then also patch its local reference
+    # Import pipeline (patch local reference when not using live JDV)
     import src.lingo.pipeline as _lp
-    _lp.handle_vagueness_turn = _make_resolved_vagueness
+    if use_precomputed_jdv:
+        _lp.handle_vagueness_turn = _make_precomputed_vagueness
+    elif not with_jdv:
+        _lp.handle_vagueness_turn = _make_resolved_vagueness
     run_main_pipeline = _lp.run_main_pipeline
     from src.Vagueness_Judge.runtime.pipeline import default_clarification_state
 
@@ -216,6 +303,14 @@ def main() -> None:
             "textoir_seed": 0,
         }
         cs = default_clarification_state()
+        if use_precomputed_jdv:
+            cs["_batch_record_id"] = record_id  # type: ignore[typeddict-unknown-key]
+
+        if use_precomputed_jdv and record_id not in _JDV_BY_RECORD_ID:
+            print(f"  [SKIP] No precomputed JDV for {record_id}")
+            skipped += 1
+            print()
+            continue
 
         try:
             result = run_main_pipeline(
@@ -235,7 +330,31 @@ def main() -> None:
 
             cao = _captured_caos[-1] if _captured_caos else result
 
-            _save_cao(cao, query, record_id, pipeline_status, idx)
+            result_meta = result.get("meta", {})
+            if use_precomputed_jdv:
+                pre = _JDV_BY_RECORD_ID.get(record_id, {})
+                jdv_info = {
+                    "status": pre.get("status", "resolved"),
+                    "completed_query": pre.get("completed_query", query),
+                    "summary": pre.get("summary", ""),
+                    "summary_thought": pre.get("summary_thought", ""),
+                    "raw_response": pre.get("raw_response", ""),
+                    "source_file": pre.get("source_file", ""),
+                }
+            else:
+                jdv_info = {
+                    "status": "resolved",
+                    "completed_query": result_meta.get(
+                        "completed_query",
+                        cao.get("meta", {}).get("completed_query", query),
+                    ),
+                    "summary": result_meta.get(
+                        "summary",
+                        cao.get("meta", {}).get("summary", ""),
+                    ),
+                    "summary_thought": result_meta.get("summary_thought", ""),
+                }
+            _save_cao(cao, query, record_id, pipeline_status, idx, jdv=jdv_info)
             resolved += 1
 
             oos_status = cao.get("intent", {}).get("oos_ind_status", "N/A")
